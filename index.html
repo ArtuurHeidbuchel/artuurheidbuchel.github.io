@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0d0d0d;
+            color: #d4d4d4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #8a8a8a;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .link {
+            background: transparent;
+            border: 2px solid #2a2a2a;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #d4d4d4;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-transform: lowercase;
+        }
+
+        .link:hover {
+            border-color: #505050;
+            color: #ffffff;
+            background: #1a1a1a;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .links {
+                gap: 16px;
+            }
+            
+            .link {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Artuur Heidbuchel</h1>
+            <p>A brief description about yourself, what you do, or whatever you'd like people to know.</p>
+        </div>
+        
+        <div class="links">
+            <a href="https://twitter.com/yourusername" class="link">twitter</a>
+            <a href="https://github.com/yourusername" class="link">github</a>
+            <a href="https://linkedin.com/in/yourusername" class="link">linkedin</a>
+            <a href="https://instagram.com/yourusername" class="link">instagram</a>
+            <a href="mailto:your.email@example.com" class="link">email</a>
+        </div>
+    </div>
+</body>
+</html>
