@@ -74,6 +74,47 @@
             background: #1a1a1a;
         }
 
+        footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        footer p {
+            color: #8a8a8a;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            text-transform: lowercase;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .buttons img {
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .buttons a {
+            color: #d4d4d4;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .buttons a:hover {
+            border-color: #505050;
+            color: #ffffff;
+        }
+
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 2rem;
@@ -93,17 +134,30 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Artuur Heidbuchel</h1>
-            <p>A brief description about yourself, what you do, or whatever you'd like people to know.</p>
+            <h1>Artuur Heidbüchel</h1>
+            <p style="color: #6a6a6a; font-size: 0.9rem; margin-bottom: 20px;">Computer Science Student</p>
+            <p>I prefer direct communication over social media noise. This site connects you to the platforms where I actually spend my time and share my work.</p>
         </div>
         
         <div class="links">
-            <a href="https://twitter.com/yourusername" class="link">twitter</a>
-            <a href="https://github.com/yourusername" class="link">github</a>
-            <a href="https://linkedin.com/in/yourusername" class="link">linkedin</a>
-            <a href="https://instagram.com/yourusername" class="link">instagram</a>
-            <a href="mailto:your.email@example.com" class="link">email</a>
+            <a href="https://github.com/ArtuurHeidbuchel" class="link">Github</a>
+            <a href="https://app.thestorygraph.com/profile/artuur_heidbuchel" class="link">The Storygraph</a>
+            <a href="https://www.last.fm/user/Artuur_-" class="link">last.fm</a>
+            <a href="mailto:artuur.heidbuchel@protonmail.com" class="link">email</a>
         </div>
+
+        <footer>
+            <p>software/services i like to use and support</p>
+            <div class="buttons">
+                <a href="https://www.mozilla.org/en-US/firefox/download" target="_blank"><img src="88x31/firefoxnow.gif" alt="Firefox"></a>
+                <a href="https://steamcommunity.com/profiles/76561198358957265/" target="_blank"><img src="88x31/steam.gif" alt="Steam"></a>
+                <a href="https://ublockorigin.com/" target="_blank"><img src="88x31/ublock-now.png" alt="uBlock Origin"></a>
+                <a href="https://www.videolan.org/vlc/" target="_blank"><img src="88x31/vlc.png" alt="VLC"></a>
+                <a href="https://fedoraproject.org/" target="_blank"><img src="88x31/fedora.png" alt="Fedora"></a>
+                <a href="https://www.qwant.com/" target="_blank"><img src="88x31/qwant" alt="Qwant"></a>
+                <a href="https://www.reddit.com/r/AskHistorians/" target="_blank"><img src="88x31/askhistorians" alt="AskHistorians"></a>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
