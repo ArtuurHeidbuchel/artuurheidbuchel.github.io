@@ -4,225 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artuur Heidbüchel</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: #0d0d0d;
-            color: #d4d4d4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .header {
-            margin-bottom: 50px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            color: #ffffff;
-            font-weight: normal;
-            letter-spacing: 2px;
-        }
-
-        .header p {
-            color: #8a8a8a;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .links {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .link {
-            background: transparent;
-            border: 2px solid #2a2a2a;
-            padding: 12px 28px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #d4d4d4;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            display: inline-block;
-            text-transform: lowercase;
-        }
-
-        .link:hover {
-            border-color: #505050;
-            color: #ffffff;
-            background: #1a1a1a;
-        }
-
-        footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid #2a2a2a;
-        }
-
-        footer p {
-            color: #8a8a8a;
-            font-size: 0.85rem;
-            margin-bottom: 16px;
-            text-transform: lowercase;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .buttons img {
-            display: block;
-            image-rendering: pixelated;
-        }
-
-        .buttons a {
-            color: #d4d4d4;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 4px 8px;
-            border: 1px solid #2a2a2a;
-            border-radius: 3px;
-            transition: all 0.2s ease;
-        }
-
-        .buttons a:hover {
-            border-color: #505050;
-            color: #ffffff;
-        }
-
-        .section-label {
-                color: #6a6a6a;
-                font-size: 0.85rem;
-                text-transform: lowercase;
-                margin: 50px 0 16px;
-            }
-            
-            .lang-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 14px;
-                max-width: 500px;
-                margin: 0 auto;
-            }
-            
-            .lang-card {
-                background: transparent;
-                border: 2px solid #2a2a2a;
-                border-radius: 4px;
-                padding: 18px 24px;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                color: #d4d4d4;
-                font-size: 1rem;
-                transition: all 0.2s ease;
-            }
-            
-            .lang-card:hover {
-                border-color: #505050;
-                background: #1a1a1a;
-            }
-            
-            @media (max-width: 600px) {
-                .lang-grid {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .links {
-                gap: 16px;
-            }
-            
-            .link {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span id="theme-icon">☾</span>
+    </button>
+
+    <main class="container">
+        <header>
             <h1>Artuur Heidbüchel</h1>
-            <p style="color: #6a6a6a; font-size: 0.9rem; margin-bottom: 20px;">Computer Science Student</p>
-            <p style="color: #6a6a6a; font-size: 0.9rem; margin-bottom: 20px;">en / nl / de / fr</p>
-            <p>I prefer direct communication over social media. This landing page connects you to the platforms where I actually spend my time and share my work.</p>
-        </div>
+            <p class="sub-header">Computer Science Student</p>
+            <p class="sub-header">en / nl / de / fr</p>
+            <p class="bio">I prefer direct communication over social media. This landing page connects you to the platforms where I actually spend my time and share my work.</p>
+        </header>
         
-        <div class="links">
+        <nav class="links">
             <a href="https://github.com/ArtuurHeidbuchel" class="link">Github</a>
-            <a href="https://app.thestorygraph.com/profile/artuur_heidbuchel" class="link">The Storygraph</a>
+            <a href="https://app.thestorygraph.com/profile/artuur_heidbuchel" class="link">Storygraph</a>
             <a href="https://www.last.fm/user/Artuur_-" class="link">last.fm</a>
             <a href="https://letterboxd.com/Artuur_H/" class="link">Letterboxd</a>
-            <a href="https://retroachievements.org/user/TMR2004" class="link">retroachievements</a>
             <a href="mailto:artuur.heidbuchel@protonmail.com" class="link">email</a>
-        </div>
+        </nav>
 
-        <p class="section-label">languages & tools</p>
-        <div class="lang-grid">
-        
-            <div class="lang-card">
-                <img src="https://cdn.simpleicons.org/haskell" width="32" height="32">
-                haskell
+        <section>
+            <p class="section-label">projects</p>
+            <div class="project-category">
+                <div>
+                    <p class="category-tag">// academic</p>
+                    <div class="project-item">
+                        <span class="project-title">OpenGL Bezier-curve Test</span>
+                        <p class="project-desc">A looping animation using bezier curves. A project to get familiar with the basics of computer graphics pipelines.</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <p class="category-tag">// personal</p>
+                    <div class="project-item">
+                        <span class="project-title">PICO-8 Game</span>
+                        <p class="project-desc">A retro experiment in Lua. Originally planned to get comfortable with game development in hardware limited environments.</p>
+                    </div>
+                </div>
             </div>
-        
-            <div class="lang-card">
-                <img src="https://cdn.simpleicons.org/python" width="32" height="32">
-                python
+        </section>
+
+        <section>
+            <p class="section-label">languages & tools</p>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://cdn.simpleicons.org/haskell/d4d4d4" width="24" height="24" alt="">
+                    haskell
+                </div>
+                <div class="card">
+                    <img src="https://cdn.simpleicons.org/python/d4d4d4" width="24" height="24" alt="">
+                    python
+                </div>
+                <div class="card">
+                    <img src="https://cdn.simpleicons.org/cplusplus/d4d4d4" width="24" height="24" alt="">
+                    c++
+                </div>
             </div>
-        
-            <div class="lang-card">
-                <img src="https://cdn.simpleicons.org/cplusplus" width="32" height="32">
-                c++
-            </div>
-        
-        </div>
+        </section>
 
         <footer>
-            <p>software/services i like to use and support</p>
-            <div class="buttons">
-                <a href="https://www.mozilla.org/en-US/firefox/download" target="_blank">Firefox</a>
-                <a href="https://steamcommunity.com/profiles/76561198358957265/" target="_blank">Steam</a>
-                <a href="https://ublockorigin.com/" target="_blank">uBlock Origin</a>
-                <a href="https://www.videolan.org/vlc/" target="_blank">VLC</a>
-                <a href="https://fedoraproject.org/" target="_blank">Fedora</a>
-                <a href="https://www.qwant.com/" target="_blank">Qwant</a>
-                <a href="https://www.reddit.com/r/AskHistorians/" target="_blank">AskHistorians</a>
-                <a href="https://archive.org/" target="_blank">The Internet Archive</a>
-                <a href="https://www.qbittorrent.org/" target="_blank">qBittorrent</a>
-                <a href="https://retroachievements.org/" target="_blank">RetroAchievements</a>
+            <p class="footer-label">software/services i support</p>
+            <div class="utility-links">
+                <a class="btn-small" href="https://www.mozilla.org/firefox" target="_blank">Firefox</a>
+                <a class="btn-small" href="https://ublockorigin.com/" target="_blank">uBlock Origin</a>
+                <a class="btn-small" href="https://fedoraproject.org/" target="_blank">Fedora</a>
+                <a class="btn-small" href="https://archive.org/" target="_blank">Internet Archive</a>
+                <a class="btn-small" href="https://www.videolan.org/" target="_blank">VLC</a>
+                <a class="btn-small" href="https://www.reddit.com/r/AskHistorians/" target="_blank">AskHistorians</a>
+                <a class="btn-small" href="https://archive.org/" target="_blank">The Internet Archive</a>
+                <a class="btn-small" href="https://www.qbittorrent.org/" target="_blank">qBittorrent</a>
             </div>
         </footer>
-    </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
