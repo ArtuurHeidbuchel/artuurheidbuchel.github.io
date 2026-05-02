@@ -106,7 +106,7 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
 }
 .card:hover { border-color: var(--border-hover); background: var(--surface); }
 
-/* Icon logic: Makes the d4d4d4 icons dark when in light mode */
+/* Icon logic */
 .card img {
     filter: invert(var(--icon-invert));
 }
@@ -147,4 +147,20 @@ footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--borde
 @media (max-width: 600px) { 
     .project-category { grid-template-columns: 1fr; }
     h1 { font-size: 1.8rem; }
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.tech-tag {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 3px;
+    transition: 0.2s;
 }
