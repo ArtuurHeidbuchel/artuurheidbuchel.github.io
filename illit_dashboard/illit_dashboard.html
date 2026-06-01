@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILLIT Dream Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="illit_style.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo"><span class="logo-icon">✨</span> ILLIT Zone <span class="beta-tag">BETA</span></div>
+        <nav class="nav-links">
+            <!-- Met data-attributes sturen we de slider aan -->
+            <a href="#" class="tab-btn active" data-tab="0">Overall</a>
+            <a href="#" class="tab-btn" data-tab="1">YouTube</a>
+            <a href="#" class="tab-btn" data-tab="2">Spotify</a>
+        </nav>
+    </header>
+
+    <!-- De Viewport maskeert alles wat buiten de huidige tab valt -->
+    <div class="tab-viewport">
+        <div class="tab-slider">
+
+            <!-- --- TAB 1: OVERALL --- -->
+            <div class="tab-panel">
+                <section class="kpi-grid">
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">Totale Streams (Comb.)</div></div>
+                        <div class="kpi-value">274.6 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ Nieuwe piek</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><div class="card-title">Dagen Sinds Debuut</div></div>
+                        <div class="kpi-value">68</div>
+                        <div class="kpi-trend">SUPER REAL ME</div>
+                    </div>
+                </section>
+                <main class="main-grid" style="grid-template-columns: 1fr;">
+                    <aside class="card">
+                        <div class="card-header"><div class="card-title">💖 Comeback Spotlight</div></div>
+                        <div class="spotlight-track">
+                            <div class="album-art">🦄</div>
+                            <div class="track-info"><h4>Magnetic</h4><p>SUPER REAL ME</p></div>
+                        </div>
+                        <div class="card-title" style="font-size: 14px; margin-bottom: 10px;">Gezamenlijke Doelen</div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Global Streaming Goal</span> <span>170M / 200M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width: 85%;"></div></div>
+                        </div>
+                    </aside>
+                </main>
+            </div>
+
+            <!-- --- TAB 2: YOUTUBE --- -->
+            <div class="tab-panel">
+                <section class="kpi-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Kanaal Abonnees</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">2.4 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 3.2%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">YouTube Total Views</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">185.4 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 12.8%</div>
+                    </div>
+                </section>
+                <main class="card">
+                    <div class="card-header"><div class="card-title">☁️ YouTube View Groei (7 Dagen)</div></div>
+                    <div class="chart-container"><canvas id="youtubeChart"></canvas></div>
+                </main>
+            </div>
+
+            <!-- --- TAB 3: SPOTIFY --- -->
+            <div class="tab-panel">
+                <section class="kpi-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Maandelijkse Luisteraars</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">11.2 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 5.2%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Spotify Volgers</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">982.1 <span class="kpi-unit">K</span></div>
+                        <div class="kpi-trend trend-up">↑ 1.1%</div>
+                    </div>
+                </section>
+                <main class="card">
+                    <div class="card-header"><div class="card-title">🎧 Track Streams (Magnetic)</div></div>
+                    <div class="goal-bar-container" style="margin-top: 15px;">
+                        <div class="goal-text"><span>Spotify Streams</span> <span>92M / 100M</span></div>
+                        <div class="goal-bar-bg"><div class="goal-bar-fill" style="width: 92%; background: linear-gradient(90deg, #a1c4fd, #c2e9fb);"></div></div>
+                    </div>
+                </main>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>work in progress</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
