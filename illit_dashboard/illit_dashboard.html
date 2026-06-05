@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="nl" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILLIT Dream Dashboard</title>
+    <title>ILLIT Zone ✨</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="illit_style.css">
@@ -12,76 +12,232 @@
 
 <div class="container">
     <header>
-        <div class="logo"><span class="logo-icon">✨</span> ILLIT Zone <span class="beta-tag">BETA</span></div>
+        <div class="logo">
+            <span class="logo-icon">✨</span> ILLIT Zone
+            <span class="beta-tag">BETA</span>
+        </div>
         <nav class="nav-links">
-            <!-- Met data-attributes sturen we de slider aan -->
             <a href="#" class="tab-btn active" data-tab="0">Overall</a>
             <a href="#" class="tab-btn" data-tab="1">YouTube</a>
             <a href="#" class="tab-btn" data-tab="2">Spotify</a>
+            <a href="#" class="tab-btn" data-tab="3">Members</a>
         </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <span class="theme-icon">🌙</span>
+        </button>
     </header>
 
-    <!-- De Viewport maskeert alles wat buiten de huidige tab valt -->
     <div class="tab-viewport">
         <div class="tab-slider">
 
-            <!-- --- TAB 1: OVERALL --- -->
+            <!-- ═══════════════════════════════════════ -->
+            <!-- TAB 1: OVERALL                          -->
+            <!-- ═══════════════════════════════════════ -->
             <div class="tab-panel">
-                <section class="kpi-grid">
+
+                <!-- Countdown banner -->
+                <div class="countdown-banner">
+                    <span class="countdown-label">🗓 Volgende release: <strong>SUPER REAL ME – Repackage</strong></span>
+                    <div class="countdown-timer">
+                        <div class="countdown-block"><span id="cd-days">--</span><small>dagen</small></div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-block"><span id="cd-hours">--</span><small>uur</small></div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-block"><span id="cd-mins">--</span><small>min</small></div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-block"><span id="cd-secs">--</span><small>sec</small></div>
+                    </div>
+                </div>
+
+                <!-- Lifetime stats card -->
+                <div class="card lifetime-card">
+                    <div class="card-header">
+                        <div class="card-title">🏅 Lifetime Statistics</div>
+                        <span class="badge badge-pink">Debuut 25 mrt 2024</span>
+                    </div>
+                    <div class="lifetime-grid">
+                        <div class="lifetime-stat">
+                            <span class="lifetime-val" id="days-since-debut">--</span>
+                            <span class="lifetime-lbl">Dagen sinds debuut</span>
+                        </div>
+                        <div class="lifetime-divider"></div>
+                        <div class="lifetime-stat">
+                            <span class="lifetime-val">274.6<span class="lifetime-unit">M</span></span>
+                            <span class="lifetime-lbl">Totale streams</span>
+                        </div>
+                        <div class="lifetime-divider"></div>
+                        <div class="lifetime-stat">
+                            <span class="lifetime-val">185.4<span class="lifetime-unit">M</span></span>
+                            <span class="lifetime-lbl">YouTube views</span>
+                        </div>
+                        <div class="lifetime-divider"></div>
+                        <div class="lifetime-stat">
+                            <span class="lifetime-val">3</span>
+                            <span class="lifetime-lbl">Albums / EP's</span>
+                        </div>
+                        <div class="lifetime-divider"></div>
+                        <div class="lifetime-stat">
+                            <span class="lifetime-val">5</span>
+                            <span class="lifetime-lbl">Members</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live KPI's (dingen die ook kunnen dalen) -->
+                <section class="kpi-grid" style="margin-top:20px;">
                     <div class="card">
-                        <div class="card-header"><div class="card-title">Totale Streams (Comb.)</div></div>
-                        <div class="kpi-value">274.6 <span class="kpi-unit">mln</span></div>
-                        <div class="kpi-trend trend-up">↑ Nieuwe piek</div>
+                        <div class="card-header">
+                            <div class="card-title">Maandelijkse Luisteraars</div>
+                            <span class="badge badge-blue">Spotify</span>
+                        </div>
+                        <div class="kpi-value">11.2 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 5.2% deze maand</div>
                     </div>
                     <div class="card">
-                        <div class="card-header"><div class="card-title">Dagen Sinds Debuut</div></div>
-                        <div class="kpi-value">68</div>
-                        <div class="kpi-trend">SUPER REAL ME</div>
+                        <div class="card-header">
+                            <div class="card-title">Social Media Volgers</div>
+                            <span class="badge badge-purple">Totaal</span>
+                        </div>
+                        <div class="kpi-value">14.2 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 4.8% deze maand</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">YouTube Abonnees</div>
+                            <span class="badge badge-pink">Kanaal</span>
+                        </div>
+                        <div class="kpi-value">2.4 <span class="kpi-unit">mln</span></div>
+                        <div class="kpi-trend trend-up">↑ 3.2% deze week</div>
                     </div>
                 </section>
-                <main class="main-grid" style="grid-template-columns: 1fr;">
-                    <aside class="card">
-                        <div class="card-header"><div class="card-title">💖 Comeback Spotlight</div></div>
+
+                <!-- Spotlight + Goals -->
+                <main class="main-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">💖 Comeback Spotlight</div>
+                        </div>
                         <div class="spotlight-track">
                             <div class="album-art">🦄</div>
-                            <div class="track-info"><h4>Magnetic</h4><p>SUPER REAL ME</p></div>
+                            <div class="track-info">
+                                <h4>Magnetic</h4>
+                                <p>SUPER REAL ME · 2024</p>
+                            </div>
                         </div>
-                        <div class="card-title" style="font-size: 14px; margin-bottom: 10px;">Gezamenlijke Doelen</div>
+                        <div class="card-title" style="font-size:14px;margin-bottom:12px;">🎯 Streaming Goals</div>
                         <div class="goal-bar-container">
                             <div class="goal-text"><span>Global Streaming Goal</span> <span>170M / 200M</span></div>
-                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width: 85%;"></div></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:85%"></div></div>
                         </div>
-                    </aside>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>YouTube 200M Views</span> <span>185M / 200M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:92.5%;background:linear-gradient(90deg,#a1c4fd,#c2e9fb)"></div></div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Spotify 100M Streams</span> <span>92M / 100M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:92%;background:linear-gradient(90deg,#b5ead7,#a1c4fd)"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">📊 Platform Verdeling</div>
+                        </div>
+                        <div class="chart-container" style="height:240px;">
+                            <canvas id="overallChart"></canvas>
+                        </div>
+                        <div class="platform-legend">
+                            <span class="legend-dot" style="background:#ffa6c9"></span><span>YouTube</span>
+                            <span class="legend-dot" style="background:#a1c4fd;margin-left:16px"></span><span>Spotify</span>
+                            <span class="legend-dot" style="background:#b5ead7;margin-left:16px"></span><span>Overig</span>
+                        </div>
+                    </div>
                 </main>
             </div>
 
-            <!-- --- TAB 2: YOUTUBE --- -->
+            <!-- ═══════════════════════════════════════ -->
+            <!-- TAB 2: YOUTUBE                          -->
+            <!-- ═══════════════════════════════════════ -->
             <div class="tab-panel">
                 <section class="kpi-grid">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Kanaal Abonnees</div>
+                            <div class="card-title">Abonnees</div>
                             <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" class="platform-icon">
                         </div>
                         <div class="kpi-value">2.4 <span class="kpi-unit">mln</span></div>
-                        <div class="kpi-trend trend-up">↑ 3.2%</div>
+                        <div class="kpi-trend trend-up">↑ 3.2% deze week</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">YouTube Total Views</div>
+                            <div class="card-title">Totale Views</div>
                             <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" class="platform-icon">
                         </div>
                         <div class="kpi-value">185.4 <span class="kpi-unit">mln</span></div>
-                        <div class="kpi-trend trend-up">↑ 12.8%</div>
+                        <div class="kpi-trend trend-up">↑ 12.8% deze maand</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Gem. Kijktijd</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">3.2 <span class="kpi-unit">min</span></div>
+                        <div class="kpi-trend trend-up">↑ Per video</div>
                     </div>
                 </section>
-                <main class="card">
-                    <div class="card-header"><div class="card-title">☁️ YouTube View Groei (7 Dagen)</div></div>
-                    <div class="chart-container"><canvas id="youtubeChart"></canvas></div>
+
+                <main class="main-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">☁️ View Groei (7 Dagen)</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="youtubeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">🏆 Top MV's</div>
+                        </div>
+                        <div class="top-tracks">
+                            <div class="top-track-item">
+                                <div class="top-track-rank rank-1">1</div>
+                                <div class="top-track-info">
+                                    <strong>Magnetic MV</strong>
+                                    <span>142.3M views</span>
+                                </div>
+                                <div class="top-track-bar-wrap">
+                                    <div class="top-track-bar" style="width:100%;background:linear-gradient(90deg,#ffa6c9,#ffcce0)"></div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <div class="top-track-rank rank-2">2</div>
+                                <div class="top-track-info">
+                                    <strong>Lucky Girl MV</strong>
+                                    <span>28.1M views</span>
+                                </div>
+                                <div class="top-track-bar-wrap">
+                                    <div class="top-track-bar" style="width:20%;background:linear-gradient(90deg,#a1c4fd,#c2e9fb)"></div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <div class="top-track-rank rank-3">3</div>
+                                <div class="top-track-info">
+                                    <strong>Tick-Tack MV</strong>
+                                    <span>15.0M views</span>
+                                </div>
+                                <div class="top-track-bar-wrap">
+                                    <div class="top-track-bar" style="width:11%;background:linear-gradient(90deg,#b5ead7,#a1c4fd)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
             </div>
 
-            <!-- --- TAB 3: SPOTIFY --- -->
+            <!-- ═══════════════════════════════════════ -->
+            <!-- TAB 3: SPOTIFY                          -->
+            <!-- ═══════════════════════════════════════ -->
             <div class="tab-panel">
                 <section class="kpi-grid">
                     <div class="card">
@@ -90,7 +246,7 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="platform-icon">
                         </div>
                         <div class="kpi-value">11.2 <span class="kpi-unit">mln</span></div>
-                        <div class="kpi-trend trend-up">↑ 5.2%</div>
+                        <div class="kpi-trend trend-up">↑ 5.2% deze maand</div>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -98,22 +254,211 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="platform-icon">
                         </div>
                         <div class="kpi-value">982.1 <span class="kpi-unit">K</span></div>
-                        <div class="kpi-trend trend-up">↑ 1.1%</div>
+                        <div class="kpi-trend trend-up">↑ 1.1% deze week</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Hoogste Positie</div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="platform-icon">
+                        </div>
+                        <div class="kpi-value">#<span>3</span></div>
+                        <div class="kpi-trend">Global Viral Chart</div>
                     </div>
                 </section>
-                <main class="card">
-                    <div class="card-header"><div class="card-title">🎧 Track Streams (Magnetic)</div></div>
-                    <div class="goal-bar-container" style="margin-top: 15px;">
-                        <div class="goal-text"><span>Spotify Streams</span> <span>92M / 100M</span></div>
-                        <div class="goal-bar-bg"><div class="goal-bar-fill" style="width: 92%; background: linear-gradient(90deg, #a1c4fd, #c2e9fb);"></div></div>
+
+                <main class="main-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">🎧 Streams per Track</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="spotifyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">🌍 Top Luisterlanden</div>
+                        </div>
+                        <div class="country-list">
+                            <div class="country-item">
+                                <span class="country-flag">🇰🇷</span>
+                                <span class="country-name">Zuid-Korea</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:100%"></div></div>
+                                <span class="country-pct">34%</span>
+                            </div>
+                            <div class="country-item">
+                                <span class="country-flag">🇺🇸</span>
+                                <span class="country-name">VS</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:55%;background:linear-gradient(90deg,#a1c4fd,#c2e9fb)"></div></div>
+                                <span class="country-pct">19%</span>
+                            </div>
+                            <div class="country-item">
+                                <span class="country-flag">🇯🇵</span>
+                                <span class="country-name">Japan</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:44%;background:linear-gradient(90deg,#b5ead7,#a1c4fd)"></div></div>
+                                <span class="country-pct">15%</span>
+                            </div>
+                            <div class="country-item">
+                                <span class="country-flag">🇲🇾</span>
+                                <span class="country-name">Maleisië</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:26%;background:linear-gradient(90deg,#ffd6e7,#ffa6c9)"></div></div>
+                                <span class="country-pct">9%</span>
+                            </div>
+                            <div class="country-item">
+                                <span class="country-flag">🇵🇭</span>
+                                <span class="country-name">Filipijnen</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:21%;background:linear-gradient(90deg,#ffd6e7,#ffb7d5)"></div></div>
+                                <span class="country-pct">7%</span>
+                            </div>
+                            <div class="country-item">
+                                <span class="country-flag">🌐</span>
+                                <span class="country-name">Overig</span>
+                                <div class="country-bar-wrap"><div class="country-bar" style="width:47%;background:rgba(122,107,140,0.2)"></div></div>
+                                <span class="country-pct">16%</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container" style="margin-top:20px">
+                            <div class="goal-text"><span>Magnetic – Spotify Streams</span> <span>92M / 100M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:92%;background:linear-gradient(90deg,#a1c4fd,#c2e9fb)"></div></div>
+                        </div>
                     </div>
                 </main>
             </div>
 
-        </div>
-    </div>
+            <!-- ═══════════════════════════════════════ -->
+            <!-- TAB 4: MEMBERS                          -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="tab-panel">
+                <div class="members-intro">
+                    <h2 class="members-title">Who's your bias? 💜</h2>
+                    <p>Fancam & social statistieken per member</p>
+                </div>
+                <div class="members-grid">
 
-    <footer>work in progress</footer>
+                    <div class="card member-card">
+                        <div class="member-avatar" style="background:linear-gradient(135deg,#ffd6e7,#ffb7d5)">
+                            <span>Y</span>
+                        </div>
+                        <h3 class="member-name">Yunah</h3>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-val">48.2M</span>
+                                <span class="stat-lbl">Fancam Views</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-val">892K</span>
+                                <span class="stat-lbl">Instagram</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Fancam doel 50M</span><span>48.2M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:96%;background:linear-gradient(90deg,#ffa6c9,#ffcce0)"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card member-card">
+                        <div class="member-avatar" style="background:linear-gradient(135deg,#c2e9fb,#a1c4fd)">
+                            <span>M</span>
+                        </div>
+                        <h3 class="member-name">Minju</h3>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-val">39.7M</span>
+                                <span class="stat-lbl">Fancam Views</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-val">741K</span>
+                                <span class="stat-lbl">Instagram</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Fancam doel 50M</span><span>39.7M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:79%;background:linear-gradient(90deg,#a1c4fd,#c2e9fb)"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card member-card">
+                        <div class="member-avatar" style="background:linear-gradient(135deg,#b5ead7,#aee4c8)">
+                            <span>M</span>
+                        </div>
+                        <h3 class="member-name">Moka</h3>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-val">31.4M</span>
+                                <span class="stat-lbl">Fancam Views</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-val">618K</span>
+                                <span class="stat-lbl">Instagram</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Fancam doel 50M</span><span>31.4M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:63%;background:linear-gradient(90deg,#b5ead7,#a1c4fd)"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card member-card">
+                        <div class="member-avatar" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">
+                            <span>W</span>
+                        </div>
+                        <h3 class="member-name">Wonhee</h3>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-val">44.1M</span>
+                                <span class="stat-lbl">Fancam Views</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-val">803K</span>
+                                <span class="stat-lbl">Instagram</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Fancam doel 50M</span><span>44.1M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:88%;background:linear-gradient(90deg,#ffecd2,#fcb69f)"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="card member-card">
+                        <div class="member-avatar" style="background:linear-gradient(135deg,#e0c3fc,#c9b1f5)">
+                            <span>I</span>
+                        </div>
+                        <h3 class="member-name">Iroha</h3>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-val">29.8M</span>
+                                <span class="stat-lbl">Fancam Views</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-val">573K</span>
+                                <span class="stat-lbl">Instagram</span>
+                            </div>
+                        </div>
+                        <div class="goal-bar-container">
+                            <div class="goal-text"><span>Fancam doel 50M</span><span>29.8M</span></div>
+                            <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:60%;background:linear-gradient(90deg,#e0c3fc,#c9b1f5)"></div></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Members chart -->
+                <div class="card" style="margin-top:20px">
+                    <div class="card-header">
+                        <div class="card-title">📊 Fancam Views Vergelijking</div>
+                    </div>
+                    <div class="chart-container" style="height:280px">
+                        <canvas id="membersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- .tab-slider -->
+    </div><!-- .tab-viewport -->
+
+    <footer>
+        ILLIT Zone · Alle data is mock/illustratief · werk in progress 💜
+    </footer>
 </div>
 
 <script src="app.js"></script>
