@@ -1,4 +1,14 @@
-/* 1. Variables */
+/* ============================================================
+   style.css — All styles in one file, split by section comments
+   ============================================================ */
+
+/* ── Google Fonts (NewJeans mode) ── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* ============================================================
+   SECTION 1: Variables & Light Mode
+   ============================================================ */
+
 :root {
     --bg: #0d0d0d;
     --surface: #1a1a1a;
@@ -7,10 +17,13 @@
     --text-main: #d4d4d4;
     --text-muted: #6a6a6a;
     --white: #ffffff;
-    --icon-invert: 0; /* Keeps icons as they are in dark mode */
+    --icon-invert: 0;
+    --section-label-color: var(--text-muted);
+    --link-font: 'Courier New', monospace;
+    --heading-transform: none;
+    --heading-spacing: 2px;
 }
 
-/* 2. Light Mode Overrides */
 body.light-mode {
     --bg: #f5f5f5;
     --surface: #ffffff;
@@ -19,10 +32,13 @@ body.light-mode {
     --text-main: #333333;
     --text-muted: #777777;
     --white: #000000;
-    --icon-invert: 1; /* Flips icons to dark gray in light mode */
+    --icon-invert: 1;
 }
 
-/* 3. Base Styles */
+/* ============================================================
+   SECTION 2: Reset & Base
+   ============================================================ */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -37,7 +53,7 @@ body {
 
 .container { max-width: 700px; width: 100%; }
 
-/* 4. Theme Toggle */
+/* ── Toggle buttons ── */
 #theme-toggle {
     position: fixed;
     top: 20px;
@@ -54,45 +70,79 @@ body {
     font-size: 1.1rem;
     border-radius: 50%;
     transition: 0.2s;
+    z-index: 100;
 }
+#theme-toggle:hover { border-color: var(--border-hover); background: var(--surface); }
 
-#theme-toggle:hover {
-    border-color: var(--border-hover);
-    background: var(--surface);
+#style-toggle {
+    position: fixed;
+    top: 20px;
+    right: 64px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    border-radius: 50%;
+    transition: 0.2s;
+    letter-spacing: -0.5px;
+    z-index: 100;
 }
+#style-toggle:hover { border-color: var(--border-hover); background: var(--surface); color: var(--white); }
 
-/* 5. Header & Links */
+/* ── Header ── */
 header { text-align: center; margin-bottom: 50px; }
-h1 { color: var(--white); font-weight: normal; margin-bottom: 10px; letter-spacing: 2px; }
+
+h1 {
+    color: var(--white);
+    font-weight: normal;
+    margin-bottom: 10px;
+    letter-spacing: var(--heading-spacing, 2px);
+    text-transform: var(--heading-transform, none);
+    transition: text-shadow 0.3s, letter-spacing 0.3s;
+}
+
 .sub-header { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 4px; }
 .bio { margin-top: 20px; font-size: 0.95rem; line-height: 1.6; color: var(--text-main); }
 
+/* ── Nav ── */
 nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-.link { 
-    border: 1px solid var(--border); 
-    padding: 8px 16px; 
-    text-decoration: none; 
+
+.link {
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    text-decoration: none;
     color: var(--text-main);
     border-radius: 4px;
     font-size: 0.9rem;
+    font-family: var(--link-font, 'Courier New', monospace);
     transition: 0.2s;
 }
 .link:hover { border-color: var(--border-hover); background: var(--surface); color: var(--white); }
 
-/* 6. Grid & Project Layout */
-.section-label { 
-    color: var(--text-muted); 
-    text-transform: lowercase; 
-    font-size: 0.85rem; 
+/* ── Sections ── */
+.section-label {
+    color: var(--section-label-color, var(--text-muted));
+    text-transform: lowercase;
+    font-size: 0.85rem;
     border-bottom: 1px solid var(--border);
     margin: 40px 0 20px;
     padding-bottom: 8px;
+    transition: color 0.3s;
 }
 
-.grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-    gap: 12px; 
+/* ── Grid & Cards ── */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
 }
 
 .card {
@@ -106,55 +156,25 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
 }
 .card:hover { border-color: var(--border-hover); background: var(--surface); }
 
-/* Icon logic */
 .card img {
     filter: invert(var(--icon-invert));
+    transition: filter 0.2s;
 }
 
-.project-category { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 30px; 
-}
-
+/* ── Projects ── */
+.project-category { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .category-tag { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; }
 
-.project-item { 
-    border-left: 1px solid var(--border); 
-    padding-left: 15px; 
+.project-item {
+    border-left: 1px solid var(--border);
+    padding-left: 15px;
     margin-bottom: 20px;
 }
 .project-title { color: var(--white); font-weight: bold; display: block; margin-bottom: 4px; }
 .project-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
 
-/* 7. Footer */
-footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 30px;}
-.footer-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px; }
-.utility-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-
-.btn-small { 
-    font-size: 0.75rem; 
-    text-decoration: none; 
-    color: var(--text-muted); 
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 3px;
-    transition: 0.2s;
-}
-.btn-small:hover { border-color: var(--border-hover); color: var(--white); }
-
-/* Responsive */
-@media (max-width: 600px) { 
-    .project-category { grid-template-columns: 1fr; }
-    h1 { font-size: 1.8rem; }
-}
-
-.tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-}
+/* ── Tech Tags ── */
+.tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 .tech-tag {
     font-size: 0.7rem;
@@ -163,4 +183,452 @@ footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--borde
     padding: 2px 7px;
     border-radius: 3px;
     transition: 0.2s;
+}
+
+/* ── Footer ── */
+footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 30px; }
+.footer-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px; }
+.utility-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+
+.btn-small {
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 3px;
+    transition: 0.2s;
+}
+.btn-small:hover { border-color: var(--border-hover); color: var(--white); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .project-category { grid-template-columns: 1fr; }
+    h1 { font-size: 1.8rem; }
+}
+
+
+/* ============================================================
+   SECTION 3: Unchild Mode — HOT PINK MAXIMALIST PUNK
+   ============================================================ */
+
+body.unchild-mode {
+    --bg: #ff2d78;
+    --surface: #ff5a96;
+    --border: #000000;
+    --border-hover: #b8ff00;
+    --text-main: #000000;
+    --text-muted: #000000;
+    --white: #000000;
+    --icon-invert: 1;
+    --section-label-color: #000000;
+    --link-font: 'Arial Black', Impact, sans-serif;
+    --heading-transform: uppercase;
+    --heading-spacing: 6px;
+    font-family: 'Arial Black', Impact, sans-serif;
+}
+
+body.unchild-mode header {
+    background: #b8ff00;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 #000;
+    padding: 28px 24px;
+    margin-bottom: 40px;
+    transform: rotate(-1deg);
+}
+
+body.unchild-mode h1 {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+    font-size: 2.4rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #000;
+    text-shadow: 3px 3px 0 #ff2d78;
+}
+
+body.unchild-mode .sub-header {
+    font-family: 'Courier New', monospace;
+    color: #000;
+    font-weight: bold;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+}
+
+body.unchild-mode .bio {
+    font-family: 'Courier New', monospace;
+    color: #000;
+    font-size: 0.9rem;
+    border-top: 2px dashed #000;
+    margin-top: 16px;
+    padding-top: 12px;
+}
+
+body.unchild-mode nav.links { gap: 10px; }
+
+body.unchild-mode .link {
+    font-family: 'Arial Black', Impact, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    background: #fff;
+    color: #000;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    border-radius: 999px;
+    padding: 8px 20px;
+    transition: 0.1s;
+}
+body.unchild-mode .link:hover {
+    background: #b8ff00;
+    color: #000;
+    border-color: #000;
+    box-shadow: 2px 2px 0 #000;
+    transform: translate(2px, 2px);
+}
+
+body.unchild-mode .section-label {
+    font-family: 'Arial Black', Impact, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.7rem;
+    color: #000;
+    border-bottom: 3px solid #000;
+    padding-bottom: 6px;
+}
+
+body.unchild-mode .card {
+    background: #fff;
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0 #000;
+    border-radius: 0;
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000;
+    transition: 0.1s;
+}
+body.unchild-mode .card:hover {
+    background: #b8ff00;
+    box-shadow: 2px 2px 0 #000;
+    transform: translate(3px, 3px);
+}
+body.unchild-mode .card img { filter: invert(1); }
+
+body.unchild-mode .project-item {
+    border-left: 4px solid #000;
+    padding-left: 14px;
+    background: rgba(255,255,255,0.4);
+}
+body.unchild-mode .project-title {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000;
+    font-size: 0.9rem;
+}
+body.unchild-mode .project-desc {
+    font-family: 'Courier New', monospace;
+    color: #111;
+    font-size: 0.8rem;
+}
+body.unchild-mode .category-tag {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+}
+body.unchild-mode .tech-tag {
+    background: #b8ff00;
+    color: #000;
+    border: 2px solid #000;
+    font-weight: bold;
+    border-radius: 0;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+body.unchild-mode footer { border-top: 4px solid #000; margin-top: 60px; }
+body.unchild-mode .footer-label {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.7rem;
+    color: #000;
+}
+body.unchild-mode .btn-small {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    border-radius: 0;
+    transition: 0.1s;
+}
+body.unchild-mode .btn-small:hover {
+    background: #b8ff00;
+    box-shadow: 1px 1px 0 #000;
+    transform: translate(2px, 2px);
+}
+
+body.unchild-mode #theme-toggle {
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    color: #000;
+    background: #fff;
+    border-radius: 50%;
+}
+body.unchild-mode #theme-toggle:hover {
+    background: #b8ff00;
+    box-shadow: 1px 1px 0 #000;
+    transform: translate(2px, 2px);
+}
+body.unchild-mode #style-toggle {
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    color: #000;
+    background: #b8ff00;
+    border-radius: 50%;
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+}
+body.unchild-mode #style-toggle:hover {
+    background: #fff;
+    box-shadow: 1px 1px 0 #000;
+    transform: translate(2px, 2px);
+}
+
+
+/* ============================================================
+   SECTION 4: NewJeans Mode — Y2K CASUAL / DENIM WASHED
+   ============================================================ */
+
+body.newjeans-mode {
+    --bg: #e8edf2;
+    --surface: #f2f5f8;
+    --border: #c0cdd8;
+    --border-hover: #8ba8c0;
+    --text-main: #2a3a4a;
+    --text-muted: #7a92a8;
+    --white: #0d1f33;
+    --icon-invert: 0;
+    --section-label-color: #7a92a8;
+    --link-font: 'DM Sans', system-ui, sans-serif;
+    --heading-transform: none;
+    --heading-spacing: -0.5px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+body.newjeans-mode h1 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    color: #0d1f33;
+    letter-spacing: -1px;
+}
+
+body.newjeans-mode .sub-header {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #7a92a8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+body.newjeans-mode .bio {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    color: #4a6070;
+    margin-top: 18px;
+    line-height: 1.75;
+    font-style: italic;
+}
+
+/* Header — clean, minimal, slightly warm */
+body.newjeans-mode header {
+    text-align: left;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #c0cdd8;
+    position: relative;
+}
+
+/* Accent stripe — like a denim seam */
+body.newjeans-mode header::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 48px;
+    height: 2px;
+    background: #3a6090;
+}
+
+/* Nav — left-aligned, understated */
+body.newjeans-mode nav.links {
+    justify-content: flex-start;
+    gap: 6px;
+    margin-bottom: 48px;
+}
+
+body.newjeans-mode .link {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.82rem;
+    background: transparent;
+    color: #4a6070;
+    border: 1px solid #c0cdd8;
+    border-radius: 2px;
+    padding: 6px 14px;
+    letter-spacing: 0.3px;
+    transition: 0.15s;
+}
+body.newjeans-mode .link:hover {
+    background: #0d1f33;
+    color: #e8edf2;
+    border-color: #0d1f33;
+    transform: none;
+}
+
+/* Section labels */
+body.newjeans-mode .section-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #7a92a8;
+    border-bottom: 1px solid #c0cdd8;
+    margin: 48px 0 20px;
+    padding-bottom: 10px;
+}
+
+/* Cards */
+body.newjeans-mode .card {
+    border: 1px solid #c0cdd8;
+    border-radius: 2px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: #2a3a4a;
+    background: #f2f5f8;
+    transition: 0.15s;
+}
+body.newjeans-mode .card:hover {
+    border-color: #3a6090;
+    background: #fff;
+}
+
+/* Projects */
+body.newjeans-mode .project-item {
+    border-left: 2px solid #3a6090;
+    padding-left: 16px;
+    margin-bottom: 20px;
+}
+body.newjeans-mode .project-title {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 500;
+    color: #0d1f33;
+    font-size: 0.88rem;
+    letter-spacing: 0.2px;
+}
+body.newjeans-mode .project-desc {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
+    color: #7a92a8;
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+body.newjeans-mode .category-tag {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: #7a92a8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* Tech tags */
+body.newjeans-mode .tech-tag {
+    background: #dde4eb;
+    color: #3a6090;
+    border: 1px solid #c0cdd8;
+    border-radius: 2px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+}
+
+/* Footer */
+body.newjeans-mode footer {
+    border-top: 1px solid #c0cdd8;
+    margin-top: 60px;
+    text-align: left;
+}
+body.newjeans-mode .footer-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #7a92a8;
+    margin-bottom: 14px;
+}
+body.newjeans-mode .utility-links { justify-content: flex-start; }
+body.newjeans-mode .btn-small {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 0.72rem;
+    background: transparent;
+    color: #7a92a8;
+    border: 1px solid #c0cdd8;
+    border-radius: 2px;
+    padding: 4px 10px;
+    transition: 0.15s;
+}
+body.newjeans-mode .btn-small:hover {
+    background: #0d1f33;
+    color: #e8edf2;
+    border-color: #0d1f33;
+}
+
+/* Toggle buttons */
+body.newjeans-mode #theme-toggle {
+    border: 1px solid #c0cdd8;
+    background: #f2f5f8;
+    color: #2a3a4a;
+    border-radius: 50%;
+}
+body.newjeans-mode #theme-toggle:hover {
+    background: #0d1f33;
+    color: #e8edf2;
+    border-color: #0d1f33;
+}
+body.newjeans-mode #style-toggle {
+    border: 1px solid #c0cdd8;
+    background: #f2f5f8;
+    color: #7a92a8;
+    border-radius: 50%;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 0.6rem;
+    letter-spacing: 0px;
+}
+body.newjeans-mode #style-toggle:hover {
+    background: #0d1f33;
+    color: #e8edf2;
+    border-color: #0d1f33;
 }
