@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* ── Google Fonts (NewJeans mode) ── */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght=0,300;0,400;0,500;1,300;1,400&display=swap');
 
 /* ============================================================
    SECTION 1: Variables & Light Mode
@@ -53,49 +53,53 @@ body {
 
 .container { max-width: 700px; width: 100%; }
 
-/* ── Toggle buttons ── */
-#theme-toggle {
+/* ── Fixed Controls Container (Top Right) ── */
+.controls-container {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-main);
-    width: 35px;
-    height: 35px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    border-radius: 50%;
-    transition: 0.2s;
+    flex-direction: column; 
+    align-items: center;  
+    gap: 12px; 
     z-index: 100;
 }
-#theme-toggle:hover { border-color: var(--border-hover); background: var(--surface); }
 
-#style-toggle {
-    position: fixed;
-    top: 20px;
-    right: 64px;
+/* Container just for the style buttons */
+.style-buttons {
+    display: flex;
+    flex-direction: column; 
+    gap: 6px; 
+}
+
+/* Base style for ALL control buttons to make them perfectly round */
+.controls-container button {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 0.75rem;
-    font-family: 'Courier New', monospace;
-    font-weight: bold;
+    font-size: 1.2rem; /* Boosted slightly so the emojis fill the circle nicely */
     border-radius: 50%;
     transition: 0.2s;
-    letter-spacing: -0.5px;
-    z-index: 100;
+    padding: 0;
 }
-#style-toggle:hover { border-color: var(--border-hover); background: var(--surface); color: var(--white); }
+
+/* Slight style tweak specifically for the theme toggle icon size */
+#theme-toggle {
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+.controls-container button:hover { 
+    border-color: var(--border-hover); 
+    background: var(--surface); 
+    color: var(--white); 
+}
 
 /* ── Header ── */
 header { text-align: center; margin-bottom: 50px; }
@@ -177,6 +181,7 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
 .tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 .tech-tag {
+    font-size: 0.7 cubic-bezier;
     font-size: 0.7rem;
     color: var(--text-muted);
     border: 1px solid var(--border);
@@ -379,256 +384,284 @@ body.unchild-mode .btn-small:hover {
     transform: translate(2px, 2px);
 }
 
-body.unchild-mode #theme-toggle {
+/* Theme updates for all round container buttons under Unchild Mode */
+body.unchild-mode .controls-container button {
+    font-size: 1.2rem;
     border: 3px solid #000;
     box-shadow: 3px 3px 0 #000;
     color: #000;
     background: #fff;
-    border-radius: 50%;
-}
-body.unchild-mode #theme-toggle:hover {
-    background: #b8ff00;
-    box-shadow: 1px 1px 0 #000;
-    transform: translate(2px, 2px);
-}
-body.unchild-mode #style-toggle {
-    border: 3px solid #000;
-    box-shadow: 3px 3px 0 #000;
-    color: #000;
-    background: #b8ff00;
     border-radius: 50%;
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
 }
-body.unchild-mode #style-toggle:hover {
-    background: #fff;
+body.unchild-mode .controls-container button:hover {
+    background: #b8ff00;
     box-shadow: 1px 1px 0 #000;
     transform: translate(2px, 2px);
+}
+body.unchild-mode .style-buttons button {
+    background: #b8ff00;
+}
+body.unchild-mode .style-buttons button:hover {
+    background: #fff;
 }
 
 
 /* ============================================================
-   SECTION 4: NewJeans Mode — Y2K CASUAL / DENIM WASHED
+   SECTION 4: NewJeans Mode — Y2K RETRO DESKTOP / CYBER-PHONING
    ============================================================ */
 
 body.newjeans-mode {
-    --bg: #e8edf2;
-    --surface: #f2f5f8;
-    --border: #c0cdd8;
-    --border-hover: #8ba8c0;
-    --text-main: #2a3a4a;
-    --text-muted: #7a92a8;
-    --white: #0d1f33;
+    /* Vintage Y2K Desktop Grid Pattern */
+    background-color: #e3edf7;
+    background-image: 
+        linear-gradient(#d0dfef 1px, transparent 1px),
+        linear-gradient(90deg, #d0dfef 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-attachment: fixed;
+
+    /* Nostalgic Palette: Denim Blue, Tokki Pink, Crisp White */
+    --surface: #ffffff;
+    --border: #2b5c8f;
+    --border-hover: #ff8fa3;
+    --text-main: #1a3454;
+    --text-muted: #5b7c9f;
+    --white: #0a1829;
     --icon-invert: 0;
-    --section-label-color: #7a92a8;
-    --link-font: 'DM Sans', system-ui, sans-serif;
-    --heading-transform: none;
+    --section-label-color: #ff5e7e;
+    --link-font: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --heading-transform: uppercase;
     --heading-spacing: -0.5px;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Header: Styled like a Y2K Application Window ── */
+body.newjeans-mode header {
+    text-align: left;
+    background: #ffffff;
+    border: 2px solid #2b5c8f;
+    border-radius: 12px;
+    padding: 30px 25px;
+    margin-bottom: 40px;
+    /* Hard-edged flat shadow instead of modern blur */
+    box-shadow: 5px 5px 0px #2b5c8f; 
+    position: relative;
+    overflow: hidden;
+}
+
+/* Simulated Application Top Bar (Like an old Mac/Nokia UI) */
+body.newjeans-mode header::before {
+    content: '✦ newjeans_profile.exe ✦';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: #2b5c8f;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    letter-spacing: 1px;
 }
 
 body.newjeans-mode h1 {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 300;
-    font-size: 2.8rem;
-    color: #0d1f33;
-    letter-spacing: -1px;
+    margin-top: 15px; /* Leave room for the top bar */
+    font-weight: 900;
+    font-size: 2.4rem;
+    color: #2b5c8f;
+    text-transform: none;
+    letter-spacing: -1.5px;
 }
 
 body.newjeans-mode .sub-header {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.8rem;
-    color: #7a92a8;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-body.newjeans-mode .bio {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 300;
-    font-size: 0.92rem;
-    color: #4a6070;
-    margin-top: 18px;
-    line-height: 1.75;
-    font-style: italic;
-}
-
-/* Header — clean, minimal, slightly warm */
-body.newjeans-mode header {
-    text-align: left;
-    margin-bottom: 48px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid #c0cdd8;
-    position: relative;
-}
-
-/* Accent stripe — like a denim seam */
-body.newjeans-mode header::before {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 48px;
-    height: 2px;
-    background: #3a6090;
-}
-
-/* Nav — left-aligned, understated */
-body.newjeans-mode nav.links {
-    justify-content: flex-start;
-    gap: 6px;
-    margin-bottom: 48px;
-}
-
-body.newjeans-mode .link {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.82rem;
-    background: transparent;
-    color: #4a6070;
-    border: 1px solid #c0cdd8;
-    border-radius: 2px;
-    padding: 6px 14px;
-    letter-spacing: 0.3px;
-    transition: 0.15s;
-}
-body.newjeans-mode .link:hover {
-    background: #0d1f33;
-    color: #e8edf2;
-    border-color: #0d1f33;
-    transform: none;
-}
-
-/* Section labels */
-body.newjeans-mode .section-label {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #7a92a8;
-    border-bottom: 1px solid #c0cdd8;
-    margin: 48px 0 20px;
-    padding-bottom: 10px;
-}
-
-/* Cards */
-body.newjeans-mode .card {
-    border: 1px solid #c0cdd8;
-    border-radius: 2px;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 300;
-    font-size: 0.85rem;
-    color: #2a3a4a;
-    background: #f2f5f8;
-    transition: 0.15s;
-}
-body.newjeans-mode .card:hover {
-    border-color: #3a6090;
-    background: #fff;
-}
-
-/* Projects */
-body.newjeans-mode .project-item {
-    border-left: 2px solid #3a6090;
-    padding-left: 16px;
-    margin-bottom: 20px;
-}
-body.newjeans-mode .project-title {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 500;
-    color: #0d1f33;
-    font-size: 0.88rem;
-    letter-spacing: 0.2px;
-}
-body.newjeans-mode .project-desc {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 300;
-    color: #7a92a8;
-    font-size: 0.82rem;
-    line-height: 1.55;
-}
-body.newjeans-mode .category-tag {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.7rem;
-    color: #7a92a8;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #ff5e7e; /* Pop pink */
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
-/* Tech tags */
-body.newjeans-mode .tech-tag {
-    background: #dde4eb;
-    color: #3a6090;
-    border: 1px solid #c0cdd8;
-    border-radius: 2px;
-    font-family: 'DM Sans', system-ui, sans-serif;
+body.newjeans-mode .bio {
     font-weight: 400;
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 2px 8px;
+    font-size: 0.9rem;
+    color: #385577;
+    margin-top: 15px;
+    line-height: 1.6;
+    background: #f4f8fc;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px dashed #2b5c8f;
 }
 
-/* Footer */
+/* ── Nav: Retro Cyber-Pill Tabs ── */
+body.newjeans-mode nav.links {
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+body.newjeans-mode .link {
+    font-weight: 700;
+    font-size: 0.8rem;
+    background: #ffffff;
+    color: #2b5c8f;
+    border: 2px solid #2b5c8f;
+    border-radius: 6px; /* Slightly square-round retro card style */
+    padding: 6px 14px;
+    box-shadow: 3px 3px 0px #2b5c8f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s ease;
+}
+
+body.newjeans-mode .link:hover {
+    background: #ff5e7e;
+    color: #ffffff;
+    border-color: #2b5c8f;
+    box-shadow: 1px 1px 0px #2b5c8f;
+    transform: translate(2px, 2px); /* Presses down like a real tactile hardware button */
+}
+
+/* ── Section Labels ── */
+body.newjeans-mode .section-label {
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #2b5c8f;
+    border-bottom: 2px solid #2b5c8f;
+    margin: 40px 0 20px;
+    padding-bottom: 6px;
+}
+
+/* ── Cards: Classic Web 1.0 Interface Blocks ── */
+body.newjeans-mode .grid {
+    gap: 16px;
+}
+
+body.newjeans-mode .card {
+    background: #ffffff;
+    border: 2px solid #2b5c8f;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #2b5c8f;
+    box-shadow: 4px 4px 0px #2b5c8f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s ease;
+}
+
+body.newjeans-mode .card:hover {
+    border-color: #ff5e7e;
+    box-shadow: 4px 4px 0px #ff5e7e;
+    transform: translateY(-2px);
+}
+
+/* ── Projects ── */
+body.newjeans-mode .project-item {
+    border: 2px solid #2b5c8f;
+    border-left: 6px solid #2b5c8f; /* Chunky timeline accent */
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 4px 4px 0px #2b5c8f;
+}
+
+body.newjeans-mode .project-title {
+    font-weight: 800;
+    color: #2b5c8f;
+    font-size: 0.95rem;
+}
+
+body.newjeans-mode .project-desc {
+    color: #4c6889;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-top: 6px;
+}
+
+body.newjeans-mode .category-tag {
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: #ff5e7e;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+}
+
+/* Tech tags: Cute little pixelated labels */
+body.newjeans-mode .tech-tag {
+    background: #e3edf7;
+    color: #2b5c8f;
+    border: 1px solid #2b5c8f;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.65rem;
+    padding: 1px 6px;
+}
+
+/* ── Footer ── */
 body.newjeans-mode footer {
-    border-top: 1px solid #c0cdd8;
+    border-top: 2px dashed #2b5c8f;
     margin-top: 60px;
+    padding-top: 30px;
     text-align: left;
 }
+
 body.newjeans-mode .footer-label {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.68rem;
+    font-weight: 700;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: #7a92a8;
-    margin-bottom: 14px;
-}
-body.newjeans-mode .utility-links { justify-content: flex-start; }
-body.newjeans-mode .btn-small {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 400;
-    font-size: 0.72rem;
-    background: transparent;
-    color: #7a92a8;
-    border: 1px solid #c0cdd8;
-    border-radius: 2px;
-    padding: 4px 10px;
-    transition: 0.15s;
-}
-body.newjeans-mode .btn-small:hover {
-    background: #0d1f33;
-    color: #e8edf2;
-    border-color: #0d1f33;
+    letter-spacing: 1.5px;
+    color: #5b7c9f;
 }
 
-/* Toggle buttons */
+body.newjeans-mode .utility-links {
+    justify-content: flex-start;
+}
+
+body.newjeans-mode .btn-small {
+    font-weight: 700;
+    font-size: 0.7rem;
+    background: #ffffff;
+    color: #2b5c8f;
+    border: 1px solid #2b5c8f;
+    border-radius: 4px;
+    padding: 3px 8px;
+    box-shadow: 2px 2px 0px #2b5c8f;
+    transition: 0.1s;
+}
+
+body.newjeans-mode .btn-small:hover {
+    background: #ff8fa3;
+    color: #ffffff;
+    box-shadow: 1px 1px 0px #2b5c8f;
+    transform: translate(1px, 1px);
+}
+
+/* ── Round Controls: Stylized as Pop Stickers ── */
+body.newjeans-mode .controls-container button {
+    border: 2px solid #2b5c8f;
+    background: #ffffff;
+    color: #2b5c8f;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    box-shadow: 3px 3px 0px #2b5c8f;
+}
+
 body.newjeans-mode #theme-toggle {
-    border: 1px solid #c0cdd8;
-    background: #f2f5f8;
-    color: #2a3a4a;
-    border-radius: 50%;
+    color: #ff5e7e;
+    font-size: 1.1rem;
 }
-body.newjeans-mode #theme-toggle:hover {
-    background: #0d1f33;
-    color: #e8edf2;
-    border-color: #0d1f33;
-}
-body.newjeans-mode #style-toggle {
-    border: 1px solid #c0cdd8;
-    background: #f2f5f8;
-    color: #7a92a8;
-    border-radius: 50%;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 0.6rem;
-    letter-spacing: 0px;
-}
-body.newjeans-mode #style-toggle:hover {
-    background: #0d1f33;
-    color: #e8edf2;
-    border-color: #0d1f33;
+
+body.newjeans-mode .controls-container button:hover {
+    background: #ff5e7e;
+    color: #ffffff;
+    border-color: #2b5c8f;
+    box-shadow: 1px 1px 0px #2b5c8f;
+    transform: translate(2px, 2px);
 }
