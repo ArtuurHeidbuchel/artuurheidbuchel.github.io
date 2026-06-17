@@ -1,9 +1,9 @@
 /* ============================================================
    style.css — All styles in one file, split by section comments
    ============================================================ */
-
-/* ── Google Fonts (NewJeans mode) ── */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght=0,300;0,400;0,500;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
 /* ============================================================
    SECTION 1: Variables & Light Mode
@@ -409,113 +409,205 @@ body.unchild-mode .style-buttons button:hover {
 
 
 /* ============================================================
-   SECTION 4: NewJeans Mode — Y2K RETRO DESKTOP / CYBER-PHONING
+   SECTION 4: NewJeans Mode — Y2K MAXIMALIST STICKER-BOMB
    ============================================================ */
-
 body.newjeans-mode {
-    /* Vintage Y2K Desktop Grid Pattern */
-    background-color: #e3edf7;
+    /* TEXTURED BACKGROUND: Layered Y2K Grid Pattern OVER the Pastel Mesh Gradient */
     background-image: 
-        linear-gradient(#d0dfef 1px, transparent 1px),
-        linear-gradient(90deg, #d0dfef 1px, transparent 1px);
-    background-size: 20px 20px;
+        linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+        linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #e0e7ff 100%);
+    background-size: 24px 24px, 24px 24px, auto;
     background-attachment: fixed;
 
-    /* Nostalgic Palette: Denim Blue, Tokki Pink, Crisp White */
-    --surface: #ffffff;
+    /* Palette */
+    --surface: rgba(255, 255, 255, 0.8);
     --border: #2b5c8f;
-    --border-hover: #ff8fa3;
+    --border-hover: #ff5e7e;
     --text-main: #1a3454;
     --text-muted: #5b7c9f;
-    --white: #0a1829;
-    --icon-invert: 0;
+    --white: #ffffff;
     --section-label-color: #ff5e7e;
-    --link-font: 'DM Sans', system-ui, -apple-system, sans-serif;
-    --heading-transform: uppercase;
-    --heading-spacing: -0.5px;
     font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden; /* Prevents stray stickers from causing horizontal scroll */
 }
 
-/* ── Header: Styled like a Y2K Application Window ── */
-body.newjeans-mode header {
-    text-align: left;
-    background: #ffffff;
-    border: 2px solid #2b5c8f;
-    border-radius: 12px;
-    padding: 30px 25px;
-    margin-bottom: 40px;
-    /* Hard-edged flat shadow instead of modern blur */
-    box-shadow: 5px 5px 0px #2b5c8f; 
+/* ── 1. HIDE IT BY DEFAULT (For Default & Unchild modes) ── */
+.newjeans-bg-text {
+    display: none;
+}
+
+/* ── 2. ONLY SHOW AND STYLE IT IN NEWJEANS MODE ── */
+body.newjeans-mode .newjeans-bg-text {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    font-family: 'UnifrakturMaguntia', cursive;
+    
+    font-size: 30vw; 
+    letter-spacing: -4px;
+    
+    /* Outlined/Hollow style */
+    color: transparent;
+    -webkit-text-stroke: 3px #ffffff;
+    
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    user-select: none;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+body.newjeans-mode .container {
     position: relative;
-    overflow: hidden;
+    z-index: 10;
 }
 
-/* Simulated Application Top Bar (Like an old Mac/Nokia UI) */
+/* ── 1. BACKGROUND STICKER-BOMBING (Floating Desktop Details) ── */
+
+/* Left-side floating sticker: Retro Shiny CD */
+body.newjeans-mode::before {
+    content: '💿';
+    position: fixed;
+    top: 15%;
+    left: 4%;
+    font-size: 4.5rem;
+    transform: rotate(-15deg);
+    /* Creates a realistic die-cut white sticker border + shadow */
+    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(43,92,143,0.15));
+    z-index: -1;
+    animation: floatSlow 6s ease-in-out infinite alternate;
+}
+
+body.newjeans-mode::after {
+    content: '📼';
+    position: fixed;
+    bottom: 20%;
+    right: 5%;
+    font-size: 4rem;
+    transform: rotate(12deg);
+    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(43,92,143,0.15));
+    z-index: -1;
+    animation: floatSlow 8s ease-in-out infinite alternate-reverse;
+}
+
+/* ── 2. HEADER STICKER-BOMBING ── */
+body.newjeans-mode header {
+    text-align: center;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 3px solid #ffffff;
+    border-radius: 30px;
+    padding: 50px 25px 35px 25px;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 35px rgba(168, 184, 208, 0.3), 5px 5px 0px #2b5c8f; 
+    position: relative;
+    overflow: visible; /* Crucial to let stickers pop out */
+}
+
+/* Header Sticker Left: Tokki Bunny Tag */
 body.newjeans-mode header::before {
-    content: '✦ newjeans_profile.exe ✦';
+    content: '🐰 ⋆ ˚｡⋆୨୧˚';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 24px;
-    background: #2b5c8f;
+    top: -15px;
+    left: 20px;
+    background: #ff5e7e;
     color: #ffffff;
-    font-size: 0.65rem;
-    font-family: monospace;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transform: rotate(-5deg);
+    border: 2px solid #ffffff;
+    box-shadow: 3px 3px 0px #2b5c8f;
+}
+
+/* Header Sticker Right: Cyber Star */
+body.newjeans-mode header::after {
+    content: '✦';
+    position: absolute;
+    bottom: -20px;
+    right: 15px;
+    background: #38bdf8;
+    color: #ffffff;
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
-    padding-left: 12px;
-    letter-spacing: 1px;
+    justify-content: center;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    transform: rotate(15deg);
+    box-shadow: 3px 3px 0px #2b5c8f;
 }
 
 body.newjeans-mode h1 {
-    margin-top: 15px; /* Leave room for the top bar */
+    margin-top: 10px;
     font-weight: 900;
-    font-size: 2.4rem;
+    font-size: 2.8rem;
     color: #2b5c8f;
-    text-transform: none;
-    letter-spacing: -1.5px;
+    /* Multilayered metallic chrome/pop layout text shadow */
+    text-shadow: 
+        2px 2px 0px #ffffff,
+        4px 4px 0px #a8b8d0,
+        7px 7px 0px #ffb3c6;
+    letter-spacing: -1px;
 }
 
 body.newjeans-mode .sub-header {
-    font-weight: 700;
-    font-size: 0.75rem;
-    color: #ff5e7e; /* Pop pink */
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: #ff5e7e;
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
 body.newjeans-mode .bio {
-    font-weight: 400;
+    font-weight: 500;
     font-size: 0.9rem;
     color: #385577;
-    margin-top: 15px;
+    margin-top: 20px;
     line-height: 1.6;
-    background: #f4f8fc;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px dashed #2b5c8f;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 15px;
+    border-radius: 20px;
+    border: 2px dashed #a8b8d0;
+    position: relative;
 }
 
-/* ── Nav: Retro Cyber-Pill Tabs ── */
+/* Tiny heart sticker inside the bio box */
+body.newjeans-mode .bio::after {
+    content: '💖';
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    font-size: 1.2rem;
+}
+
+/* ── 3. NAVIGATION (Bubbly Media Player Tabs) ── */
 body.newjeans-mode nav.links {
-    justify-content: flex-start;
-    gap: 8px;
+    justify-content: center;
+    gap: 12px;
     margin-bottom: 40px;
 }
 
 body.newjeans-mode .link {
-    font-weight: 700;
-    font-size: 0.8rem;
+    font-weight: 800;
+    font-size: 0.85rem;
     background: #ffffff;
     color: #2b5c8f;
-    border: 2px solid #2b5c8f;
-    border-radius: 6px; /* Slightly square-round retro card style */
-    padding: 6px 14px;
-    box-shadow: 3px 3px 0px #2b5c8f;
+    border: 2.5px solid #2b5c8f;
+    border-radius: 25px;
+    padding: 8px 20px;
+    box-shadow: 4px 4px 0px #2b5c8f;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 body.newjeans-mode .link:hover {
@@ -523,145 +615,159 @@ body.newjeans-mode .link:hover {
     color: #ffffff;
     border-color: #2b5c8f;
     box-shadow: 1px 1px 0px #2b5c8f;
-    transform: translate(2px, 2px); /* Presses down like a real tactile hardware button */
+    transform: translate(3px, 3px);
 }
 
-/* ── Section Labels ── */
+/* ── 4. SECTION LABELS ── */
 body.newjeans-mode .section-label {
-    font-weight: 800;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+    text-transform: lowercase;
     color: #2b5c8f;
-    border-bottom: 2px solid #2b5c8f;
-    margin: 40px 0 20px;
-    padding-bottom: 6px;
+    border-bottom: 3px dotted #a8b8d0;
+    margin: 50px 0 25px;
+    padding-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+body.newjeans-mode .section-label::before {
+    content: '★';
+    color: #ff5e7e;
 }
 
-/* ── Cards: Classic Web 1.0 Interface Blocks ── */
-body.newjeans-mode .grid {
-    gap: 16px;
-}
-
+/* ── 5. TECH CARDS (Dynamic Sticker Effects) ── */
 body.newjeans-mode .card {
     background: #ffffff;
     border: 2px solid #2b5c8f;
-    border-radius: 8px;
+    border-radius: 20px;
+    padding: 14px 22px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: #2b5c8f;
     box-shadow: 4px 4px 0px #2b5c8f;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: lowercase;
+    transition: all 0.2s ease;
+}
+
+/* Automatic Color Inversion to Denim Blue without editing HTML */
+body.newjeans-mode .card img {
+    filter: brightness(0) saturate(100%) invert(31%) sepia(34%) saturate(1215%) hue-rotate(173deg) brightness(93%) contrast(91%);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 body.newjeans-mode .card:hover {
+    background: #fff5f7;
     border-color: #ff5e7e;
+    color: #ff5e7e;
     box-shadow: 4px 4px 0px #ff5e7e;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
 }
 
-/* ── Projects ── */
+/* Swaps icon to Pop Pink on hover + gives it a graphic twist */
+body.newjeans-mode .card:hover img {
+    filter: brightness(0) saturate(100%) invert(53%) sepia(59%) saturate(4156%) hue-rotate(325deg) brightness(101%) contrast(101%);
+    transform: rotate(15deg) scale(1.2);
+}
+
+/* ── 6. PROJECTS ── */
 body.newjeans-mode .project-item {
-    border: 2px solid #2b5c8f;
-    border-left: 6px solid #2b5c8f; /* Chunky timeline accent */
+    border: 2.5px solid #2b5c8f;
+    border-left: 8px solid #ff5e7e; 
     background: #ffffff;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 4px 4px 0px #2b5c8f;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 5px 5px 0px #2b5c8f;
 }
 
 body.newjeans-mode .project-title {
     font-weight: 800;
     color: #2b5c8f;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
 }
 
 body.newjeans-mode .project-desc {
     color: #4c6889;
     font-size: 0.85rem;
-    line-height: 1.5;
-    margin-top: 6px;
+    line-height: 1.6;
+    margin-top: 8px;
 }
 
 body.newjeans-mode .category-tag {
-    font-weight: 800;
-    font-size: 0.75rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.25rem;
     color: #ff5e7e;
-    letter-spacing: 1px;
-    text-transform: lowercase;
 }
 
-/* Tech tags: Cute little pixelated labels */
 body.newjeans-mode .tech-tag {
-    background: #e3edf7;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    background: #e0f2fe;
     color: #2b5c8f;
-    border: 1px solid #2b5c8f;
-    border-radius: 4px;
-    font-weight: 700;
-    font-size: 0.65rem;
-    padding: 1px 6px;
+    border: 1.5px solid #2b5c8f;
+    border-radius: 8px;
+    padding: 1px 10px;
 }
 
-/* ── Footer ── */
+/* ── 7. FOOTER & UTILITY ── */
 body.newjeans-mode footer {
-    border-top: 2px dashed #2b5c8f;
-    margin-top: 60px;
-    padding-top: 30px;
-    text-align: left;
+    border-top: 3px dashed #a8b8d0;
+    margin-top: 70px;
+    padding-top: 40px;
+    text-align: center;
 }
 
 body.newjeans-mode .footer-label {
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.35rem;
     color: #5b7c9f;
 }
 
-body.newjeans-mode .utility-links {
-    justify-content: flex-start;
-}
-
 body.newjeans-mode .btn-small {
-    font-weight: 700;
-    font-size: 0.7rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.15rem;
     background: #ffffff;
     color: #2b5c8f;
-    border: 1px solid #2b5c8f;
-    border-radius: 4px;
-    padding: 3px 8px;
-    box-shadow: 2px 2px 0px #2b5c8f;
-    transition: 0.1s;
+    border: 1.5px solid #2b5c8f;
+    border-radius: 20px;
+    padding: 3px 14px;
+    box-shadow: 2.5px 2.5px 0px #2b5c8f;
+    transition: all 0.1s ease;
 }
 
 body.newjeans-mode .btn-small:hover {
-    background: #ff8fa3;
+    background: #ffb3c6;
     color: #ffffff;
     box-shadow: 1px 1px 0px #2b5c8f;
-    transform: translate(1px, 1px);
+    transform: translate(1.5px, 1.5px);
 }
 
-/* ── Round Controls: Stylized as Pop Stickers ── */
-body.newjeans-mode .controls-container button {
-    border: 2px solid #2b5c8f;
-    background: #ffffff;
-    color: #2b5c8f;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    box-shadow: 3px 3px 0px #2b5c8f;
+/* ── 8. CUSTOM CANDY-COLORED SCROLLBAR ── */
+body.newjeans-mode::-webkit-scrollbar {
+    width: 12px;
+}
+body.newjeans-mode::-webkit-scrollbar-track {
+    background: #e0e7ff;
+}
+body.newjeans-mode::-webkit-scrollbar-thumb {
+    background-color: #ff5e7e;
+    border-radius: 6px;
+    border: 3px solid #e0e7ff;
 }
 
-body.newjeans-mode #theme-toggle {
-    color: #ff5e7e;
-    font-size: 1.1rem;
+/* ── 9. STICKER ANIMATIONS ── */
+@keyframes floatSlow {
+    0% { transform: translateY(0px) rotate(-10deg); }
+    100% { transform: translateY(-15px) rotate(-20deg); }
 }
 
-body.newjeans-mode .controls-container button:hover {
-    background: #ff5e7e;
-    color: #ffffff;
-    border-color: #2b5c8f;
-    box-shadow: 1px 1px 0px #2b5c8f;
-    transform: translate(2px, 2px);
+/* Hide background margin stickers on small mobile screens to keep layout clean */
+@media (max-width: 900px) {
+    body.newjeans-mode::before,
+    body.newjeans-mode::after {
+        display: none;
+    }
 }
