@@ -30,8 +30,8 @@ function switchStyle(nextStyle) {
     applyStyle(nextStyle);
     localStorage.setItem('style', nextStyle);
 
-    // Unchild and NewJeans both override light mode
-    if (nextStyle !== 'default') {
+    // ONLY Unchild mode completely overrides light mode now
+    if (nextStyle === 'unchild') {
         body.classList.remove('light-mode');
         localStorage.setItem('theme', 'dark');
         updateThemeIcon();

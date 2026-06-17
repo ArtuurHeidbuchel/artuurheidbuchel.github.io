@@ -83,7 +83,7 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.2rem; /* Boosted slightly so the emojis fill the circle nicely */
+    font-size: 1.2rem;
     border-radius: 50%;
     transition: 0.2s;
     padding: 0;
@@ -217,227 +217,458 @@ footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--borde
    SECTION 3: Unchild Mode — HOT PINK MAXIMALIST PUNK
    ============================================================ */
 
+/* ── 3A. DEFAULT UNCHILD STATE (DARK VINYL UNDERGROUND) ── */
 body.unchild-mode {
+    /* TEXTURED BACKGROUND: Half-tone Xerox Dot Matrix & Deep Charcoal */
+    background-image: 
+        radial-gradient(rgba(255, 45, 120, 0.15) 15%, transparent 16%),
+        linear-gradient(135deg, #0d0d11 0%, #17121a 100%);
+    background-size: 16px 16px, auto;
+    background-attachment: fixed;
+
+    /* Raw Punk Cyber Variables */
+    --bg: #0d0d11;
+    --surface: #1c1921;
+    --border: #ff2d78; /* Hot Pink Outlines */
+    --border-hover: #b8ff00; /* Toxic Lime Accent */
+    --text-main: #ffffff;
+    --text-muted: #a6a0b5;
+    --white: #ffffff;
+    --icon-invert: 0;
+    --section-label-color: #b8ff00;
+    
+    font-family: 'Arial Black', Impact, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ── 3B. UNCHILD LIGHT MODE OVERRIDE (LOUD POSTER ZINE) ── */
+body.unchild-mode.light-mode {
+    /* Screen-printed halftone pattern on screaming pink */
+    background-image: 
+        radial-gradient(rgba(0, 0, 0, 0.12) 15%, transparent 16%),
+        linear-gradient(135deg, #ff2d78 0%, #ff4a8d 100%);
+    background-size: 14px 14px, auto;
+
     --bg: #ff2d78;
-    --surface: #ff5a96;
+    --surface: #fffdf5; /* Crisp newsprint white */
     --border: #000000;
     --border-hover: #b8ff00;
     --text-main: #000000;
-    --text-muted: #000000;
+    --text-muted: #333333;
     --white: #000000;
     --icon-invert: 1;
     --section-label-color: #000000;
-    --link-font: 'Arial Black', Impact, sans-serif;
-    --heading-transform: uppercase;
-    --heading-spacing: 6px;
-    font-family: 'Arial Black', Impact, sans-serif;
 }
 
+/* ── 3C. COMPONENT STYLING ── */
+
+/* Shredded/Asymmetric Header Wrapper */
 body.unchild-mode header {
-    background: #b8ff00;
-    border: 4px solid #000;
-    box-shadow: 6px 6px 0 #000;
-    padding: 28px 24px;
-    margin-bottom: 40px;
-    transform: rotate(-1deg);
+    background: var(--border-hover);
+    color: #000000;
+    border: 4px solid var(--border);
+    box-shadow: 8px 8px 0px var(--border);
+    padding: 35px 25px;
+    margin-bottom: 50px;
+    transform: rotate(-1.5deg);
+    position: relative;
+    border-radius: 0px; /* Hard edges for brutalism */
+}
+
+body.unchild-mode header::before {
+    content: '▲ WARNING ▲';
+    position: absolute;
+    top: -16px;
+    right: 20px;
+    background: var(--border);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    transform: rotate(2deg);
 }
 
 body.unchild-mode h1 {
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
-    font-size: 2.4rem;
-    letter-spacing: 6px;
+    font-size: 2.6rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: #000;
-    text-shadow: 3px 3px 0 #ff2d78;
+    color: #000000;
+    margin: 0;
+    /* Clean text shadow that hits different depending on mode background */
+    text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.8);
+}
+body.unchild-mode.light-mode h1 {
+    text-shadow: 3px 3px 0px var(--bg);
 }
 
 body.unchild-mode .sub-header {
     font-family: 'Courier New', monospace;
-    color: #000;
-    font-weight: bold;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
+    color: #000000;
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    margin-top: 5px;
+    text-transform: uppercase;
 }
 
 body.unchild-mode .bio {
     font-family: 'Courier New', monospace;
-    color: #000;
+    color: #000000;
     font-size: 0.9rem;
-    border-top: 2px dashed #000;
-    margin-top: 16px;
-    padding-top: 12px;
+    font-weight: bold;
+    border-top: 3px dashed #000000;
+    margin-top: 20px;
+    padding-top: 15px;
+    line-height: 1.5;
 }
 
-body.unchild-mode nav.links { gap: 10px; }
+/* Hard-Edge Navigation Pill Grid */
+body.unchild-mode nav.links { 
+    gap: 12px; 
+    margin-bottom: 40px;
+}
 
 body.unchild-mode .link {
     font-family: 'Arial Black', Impact, sans-serif;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     letter-spacing: 1px;
-    background: #fff;
-    color: #000;
-    border: 3px solid #000;
-    box-shadow: 4px 4px 0 #000;
-    border-radius: 999px;
-    padding: 8px 20px;
-    transition: 0.1s;
-}
-body.unchild-mode .link:hover {
-    background: #b8ff00;
-    color: #000;
-    border-color: #000;
-    box-shadow: 2px 2px 0 #000;
-    transform: translate(2px, 2px);
+    background: var(--surface);
+    color: var(--text-main);
+    border: 3px solid var(--border);
+    box-shadow: 5px 5px 0px var(--border);
+    border-radius: 0px; /* Pure geometric block */
+    padding: 10px 22px;
+    transition: all 0.1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+body.unchild-mode .link:hover {
+    background: var(--border-hover);
+    color: #000000;
+    border-color: var(--border-hover);
+    box-shadow: 2px 2px 0px var(--border);
+    transform: translate(3px, 3px);
+}
+
+/* Heavy Section Tapes */
 body.unchild-mode .section-label {
     font-family: 'Arial Black', Impact, sans-serif;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 0.7rem;
-    color: #000;
-    border-bottom: 3px solid #000;
-    padding-bottom: 6px;
+    letter-spacing: 3px;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    border-bottom: 4px solid var(--border);
+    padding-bottom: 8px;
+    margin: 50px 0 25px;
 }
 
+/* Pure Brutalist Grid Cards */
 body.unchild-mode .card {
-    background: #fff;
-    border: 3px solid #000;
-    box-shadow: 5px 5px 0 #000;
-    border-radius: 0;
+    background: var(--surface);
+    border: 3px solid var(--border);
+    box-shadow: 6px 6px 0px var(--border);
+    border-radius: 0px;
     font-family: 'Arial Black', Impact, sans-serif;
     font-size: 0.85rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #000;
-    transition: 0.1s;
+    color: var(--text-main);
+    padding: 16px;
+    transition: all 0.1s ease;
 }
-body.unchild-mode .card:hover {
-    background: #b8ff00;
-    box-shadow: 2px 2px 0 #000;
-    transform: translate(3px, 3px);
-}
-body.unchild-mode .card img { filter: invert(1); }
 
-body.unchild-mode .project-item {
-    border-left: 4px solid #000;
-    padding-left: 14px;
-    background: rgba(255,255,255,0.4);
+body.unchild-mode .card:hover {
+    background: var(--border-hover);
+    color: #000000;
+    border-color: var(--border-hover);
+    box-shadow: 2px 2px 0px var(--border);
+    transform: translate(4px, 4px);
 }
+
+body.unchild-mode .card img { 
+    filter: invert(var(--icon-invert)); 
+    transition: transform 0.1s ease;
+}
+body.unchild-mode .card:hover img {
+    filter: invert(1); /* Force crisp black icon on lime hover */
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Screen-print News Zine Project Cards */
+body.unchild-mode .project-item {
+    background: var(--surface);
+    border: 3px solid var(--border);
+    box-shadow: 6px 6px 0px var(--border);
+    border-radius: 0px;
+    padding: 24px;
+    transition: all 0.1s ease;
+}
+
+body.unchild-mode .project-item:hover {
+    border-color: var(--border-hover);
+    box-shadow: 8px 8px 0px var(--border-hover);
+}
+
 body.unchild-mode .project-title {
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #000;
-    font-size: 0.9rem;
+    color: var(--text-main);
+    font-size: 1.05rem;
 }
+
 body.unchild-mode .project-desc {
     font-family: 'Courier New', monospace;
-    color: #111;
-    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-top: 10px;
 }
+
 body.unchild-mode .category-tag {
     font-family: 'Courier New', monospace;
-    font-weight: bold;
-    color: #000;
-    letter-spacing: 2px;
-    font-size: 0.7rem;
+    font-weight: 900;
+    color: var(--border-hover);
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
 }
+body.unchild-mode.light-mode .category-tag {
+    color: var(--border);
+}
+
 body.unchild-mode .tech-tag {
-    background: #b8ff00;
-    color: #000;
-    border: 2px solid #000;
-    font-weight: bold;
-    border-radius: 0;
+    background: var(--border-hover);
+    color: #000000;
+    border: 2px solid #000000;
+    font-weight: 900;
+    border-radius: 0px;
     font-size: 0.65rem;
     letter-spacing: 1px;
     text-transform: uppercase;
+    padding: 2px 8px;
 }
 
-body.unchild-mode footer { border-top: 4px solid #000; margin-top: 60px; }
+/* Footer Control Slams */
+body.unchild-mode footer { 
+    border-top: 4px dashed var(--border); 
+    margin-top: 80px;
+    padding-top: 40px;
+}
+
 body.unchild-mode .footer-label {
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 3px;
-    font-size: 0.7rem;
-    color: #000;
+    font-size: 0.75rem;
+    color: var(--text-main);
 }
+
 body.unchild-mode .btn-small {
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
     text-transform: uppercase;
-    background: #fff;
-    color: #000;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 0 #000;
-    border-radius: 0;
-    transition: 0.1s;
-}
-body.unchild-mode .btn-small:hover {
-    background: #b8ff00;
-    box-shadow: 1px 1px 0 #000;
-    transform: translate(2px, 2px);
+    background: var(--surface);
+    color: var(--text-main);
+    border: 2px solid var(--border);
+    box-shadow: 4px 4px 0px var(--border);
+    border-radius: 0px;
+    padding: 4px 12px;
+    transition: all 0.1s ease;
 }
 
-/* Theme updates for all round container buttons under Unchild Mode */
+body.unchild-mode .btn-small:hover {
+    background: var(--border-hover);
+    color: #000000;
+    border-color: var(--border-hover);
+    box-shadow: 1px 1px 0px var(--border);
+    transform: translate(3px, 3px);
+}
+
+/* Control Knobs UI Customization */
 body.unchild-mode .controls-container button {
     font-size: 1.2rem;
-    border: 3px solid #000;
-    box-shadow: 3px 3px 0 #000;
-    color: #000;
-    background: #fff;
-    border-radius: 50%;
+    border: 3px solid var(--border);
+    box-shadow: 4px 4px 0px var(--border);
+    color: var(--text-main);
+    background: var(--surface);
+    border-radius: 0px; /* Brutalist blocks over round badges */
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
+    transition: all 0.1s ease;
 }
+
 body.unchild-mode .controls-container button:hover {
-    background: #b8ff00;
-    box-shadow: 1px 1px 0 #000;
-    transform: translate(2px, 2px);
+    background: var(--border-hover);
+    color: #000000;
+    border-color: var(--border-hover);
+    box-shadow: 1px 1px 0px var(--border);
+    transform: translate(3px, 3px);
 }
+
 body.unchild-mode .style-buttons button {
-    background: #b8ff00;
+    background: var(--border-hover);
+    color: #000000;
 }
 body.unchild-mode .style-buttons button:hover {
-    background: #fff;
+    background: var(--surface);
+    color: var(--text-main);
+}
+
+/* ── 3D. BACKGROUND INFINITE TICKER TAPES ── */
+
+/* Hidden in default minimalist and NewJeans modes */
+.unchild-bg-tickers {
+    display: none;
+}
+
+/* Activated entirely via body class wrapper */
+body.unchild-mode .unchild-bg-tickers {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;          
+    pointer-events: none; 
+    overflow: hidden;
+    opacity: 0.07;        
+    transition: opacity 0.3s ease;
+}
+
+/* High contrast ink adjustment for bright poster light mode */
+body.unchild-mode.light-mode .unchild-bg-tickers {
+    opacity: 0.14; 
+}
+
+body.unchild-mode .ticker-tape {
+    position: absolute;
+    width: 200%; 
+    left: -50%;
+    background: transparent;
+    border-top: 3px dashed var(--border);
+    border-bottom: 3px dashed var(--border);
+    padding: 20px 0; /* Slightly widened padding for better visual breathing room */
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center; /* Snaps the track to the center point */
+}
+
+/* Counter-balanced grid rotations */
+body.unchild-mode .tape-left {
+    top: 20%;
+    transform: rotate(-5deg);
+}
+
+body.unchild-mode .tape-right {
+    top: 60%;
+    transform: rotate(5deg);
+}
+
+body.unchild-mode .ticker-track {
+    display: flex;
+    align-items: center; /* Snaps the spans inside the track vertically */
+    width: max-content;
+}
+
+body.unchild-mode .ticker-track span {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 4rem; 
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--text-main);
+    padding-right: 40px;
+    letter-spacing: 4px;
+    line-height: 1; /* CRITICAL: Strips the font's uneven natural vertical padding */
+}
+
+/* Seamless infinite scroll drivers */
+body.unchild-mode .tape-left .ticker-track {
+    animation: unchildMarqueeLeft 30s linear infinite;
+}
+
+body.unchild-mode .tape-right .ticker-track {
+    animation: unchildMarqueeRight 30s linear infinite;
+}
+
+@keyframes unchildMarqueeLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes unchildMarqueeRight {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
 }
 
 
 /* ============================================================
    SECTION 4: NewJeans Mode — Y2K MAXIMALIST STICKER-BOMB
    ============================================================ */
+
+/* Import the retro fonts */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
+/* ── 4A. DEFAULT NEWJEANS STATE (SOFT RETRO-TECH DARK MODE) ── */
 body.newjeans-mode {
-    /* TEXTURED BACKGROUND: Layered Y2K Grid Pattern OVER the Pastel Mesh Gradient */
+    /* TEXTURED BACKGROUND: Nostalgic Midnight Denim & Deep Indigo Ink Canvas */
+    background-image: 
+        linear-gradient(rgba(140, 160, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 160, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(135deg, #0b0c16 0%, #121424 50%, #1b1329 100%);
+    background-size: 32px 32px, 32px 32px, auto;
+    background-attachment: fixed;
+
+    /* Refined Nostalgic Y2K Color Palette */
+    --surface: rgba(22, 24, 43, 0.85); /* Slightly darker card base */
+    --border: #8ca0ff; /* Dreamy Periwinkle Blue (Classic Y2K tech tint) */
+    --border-hover: #e599b8; /* Nostalgic Dusty Rose / Vintage Pink */
+    --text-main: #f1f3ff;
+    --text-muted: #9ba0c5; /* Muted Slate Lavender */
+    --white: #ffffff;
+    --section-label-color: #e599b8;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ── 4B. LIGHT MODE OVERRIDE (SOFT PASTEL MODE) ── */
+body.newjeans-mode.light-mode {
+    background-size: 24px 24px, 24px 24px, auto;
+    background-attachment: fixed;
+    
+    /* Soft Pastel Candy Grid */
     background-image: 
         linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
         linear-gradient(135deg, #e0f2fe 0%, #fce7f3 50%, #e0e7ff 100%);
-    background-size: 24px 24px, 24px 24px, auto;
-    background-attachment: fixed;
 
-    /* Palette */
-    --surface: rgba(255, 255, 255, 0.8);
-    --border: #2b5c8f;
-    --border-hover: #ff5e7e;
+    /* Original Light Pastel Variables */
+    --surface: rgba(255, 255, 255, 0.85);
+    --border: #2b5c8f; /* Classic Denim Blue */
+    --border-hover: #ff5e7e; /* Pop Pink */
     --text-main: #1a3454;
     --text-muted: #5b7c9f;
     --white: #ffffff;
     --section-label-color: #ff5e7e;
-    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-    overflow-x: hidden; /* Prevents stray stickers from causing horizontal scroll */
+    background-color: #e0f2fe;
+    --bg: #e0f2fe;
 }
 
-/* ── 1. HIDE IT BY DEFAULT (For Default & Unchild modes) ── */
+/* ── 4C. BACKGROUND TEXT MANAGEMENT ── */
 .newjeans-bg-text {
     display: none;
 }
 
-/* ── 2. ONLY SHOW AND STYLE IT IN NEWJEANS MODE ── */
 body.newjeans-mode .newjeans-bg-text {
     display: block;
     position: fixed;
@@ -445,20 +676,19 @@ body.newjeans-mode .newjeans-bg-text {
     left: 50%;
     transform: translate(-50%, -50%) rotate(-3deg);
     font-family: 'UnifrakturMaguntia', cursive;
-    
     font-size: 30vw; 
     letter-spacing: -4px;
     
-    /* Outlined/Hollow style */
+    /* FIXED WHITE OUTLINE FOR BOTH MODES */
     color: transparent;
-    -webkit-text-stroke: 3px #ffffff;
+    -webkit-text-stroke: 5px #ffffff; 
     
-    opacity: 0.8;
+    opacity: 0.5;
     z-index: 0;
     pointer-events: none;
     white-space: nowrap;
     user-select: none;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
 }
 
 body.newjeans-mode .container {
@@ -466,9 +696,7 @@ body.newjeans-mode .container {
     z-index: 10;
 }
 
-/* ── 1. BACKGROUND STICKER-BOMBING (Floating Desktop Details) ── */
-
-/* Left-side floating sticker: Retro Shiny CD */
+/* ── 1. BACKGROUND STICKER-BOMBING ── */
 body.newjeans-mode::before {
     content: '💿';
     position: fixed;
@@ -476,10 +704,9 @@ body.newjeans-mode::before {
     left: 4%;
     font-size: 4.5rem;
     transform: rotate(-15deg);
-    /* Creates a realistic die-cut white sticker border + shadow */
-    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(43,92,143,0.15));
+    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(0,0,0,0.15));
     z-index: -1;
-    animation: floatSlow 6s ease-in-out infinite alternate;
+    animation: floatSlow 3s ease-in-out infinite alternate;
 }
 
 body.newjeans-mode::after {
@@ -489,9 +716,9 @@ body.newjeans-mode::after {
     right: 5%;
     font-size: 4rem;
     transform: rotate(12deg);
-    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(43,92,143,0.15));
+    filter: drop-shadow(0px 0px 0px #fff) drop-shadow(0px 0px 0px #fff) drop-shadow(4px 4px 0px rgba(0,0,0,0.15));
     z-index: -1;
-    animation: floatSlow 8s ease-in-out infinite alternate-reverse;
+    animation: floatSlow 5s ease-in-out infinite alternate-reverse;
 }
 
 /* ── 2. HEADER STICKER-BOMBING ── */
@@ -504,18 +731,17 @@ body.newjeans-mode header {
     border-radius: 30px;
     padding: 50px 25px 35px 25px;
     margin-bottom: 40px;
-    box-shadow: 0 15px 35px rgba(168, 184, 208, 0.3), 5px 5px 0px #2b5c8f; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 5px 5px 0px var(--border); 
     position: relative;
-    overflow: visible; /* Crucial to let stickers pop out */
+    overflow: visible;
 }
 
-/* Header Sticker Left: Tokki Bunny Tag */
 body.newjeans-mode header::before {
     content: '🐰 ⋆ ˚｡⋆୨୧˚';
     position: absolute;
     top: -15px;
     left: 20px;
-    background: #ff5e7e;
+    background: var(--border-hover);
     color: #ffffff;
     padding: 6px 16px;
     border-radius: 20px;
@@ -523,16 +749,15 @@ body.newjeans-mode header::before {
     font-size: 0.85rem;
     transform: rotate(-5deg);
     border: 2px solid #ffffff;
-    box-shadow: 3px 3px 0px #2b5c8f;
+    box-shadow: 3px 3px 0px var(--border);
 }
 
-/* Header Sticker Right: Cyber Star */
 body.newjeans-mode header::after {
     content: '✦';
     position: absolute;
     bottom: -20px;
     right: 15px;
-    background: #38bdf8;
+    background: var(--border);
     color: #ffffff;
     font-size: 1.5rem;
     width: 44px;
@@ -543,26 +768,25 @@ body.newjeans-mode header::after {
     border-radius: 50%;
     border: 3px solid #ffffff;
     transform: rotate(15deg);
-    box-shadow: 3px 3px 0px #2b5c8f;
+    box-shadow: 3px 3px 0px var(--border);
 }
 
 body.newjeans-mode h1 {
     margin-top: 10px;
     font-weight: 900;
     font-size: 2.8rem;
-    color: #2b5c8f;
-    /* Multilayered metallic chrome/pop layout text shadow */
+    color: var(--border);
     text-shadow: 
         2px 2px 0px #ffffff,
-        4px 4px 0px #a8b8d0,
-        7px 7px 0px #ffb3c6;
+        4px 4px 0px rgba(0,0,0,0.15),
+        6px 6px 0px var(--border-hover);
     letter-spacing: -1px;
 }
 
 body.newjeans-mode .sub-header {
     font-family: 'VT323', monospace;
     font-size: 1.3rem;
-    color: #ff5e7e;
+    color: var(--border-hover);
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
@@ -570,17 +794,20 @@ body.newjeans-mode .sub-header {
 body.newjeans-mode .bio {
     font-weight: 500;
     font-size: 0.9rem;
-    color: #385577;
+    color: var(--text-main);
     margin-top: 20px;
     line-height: 1.6;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.02);
     padding: 15px;
     border-radius: 20px;
-    border: 2px dashed #a8b8d0;
+    border: 2px dashed var(--border);
     position: relative;
 }
 
-/* Tiny heart sticker inside the bio box */
+body.newjeans-mode.light-mode .bio {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 body.newjeans-mode .bio::after {
     content: '💖';
     position: absolute;
@@ -599,22 +826,21 @@ body.newjeans-mode nav.links {
 body.newjeans-mode .link {
     font-weight: 800;
     font-size: 0.85rem;
-    background: #ffffff;
-    color: #2b5c8f;
-    border: 2.5px solid #2b5c8f;
+    background: var(--surface);
+    color: var(--text-main);
+    border: 2.5px solid var(--border);
     border-radius: 25px;
     padding: 8px 20px;
-    box-shadow: 4px 4px 0px #2b5c8f;
+    box-shadow: 4px 4px 0px var(--border);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 body.newjeans-mode .link:hover {
-    background: #ff5e7e;
+    background: var(--border-hover);
     color: #ffffff;
-    border-color: #2b5c8f;
-    box-shadow: 1px 1px 0px #2b5c8f;
+    box-shadow: 1px 1px 0px var(--border);
     transform: translate(3px, 3px);
 }
 
@@ -623,8 +849,8 @@ body.newjeans-mode .section-label {
     font-family: 'VT323', monospace;
     font-size: 1.5rem;
     text-transform: lowercase;
-    color: #2b5c8f;
-    border-bottom: 3px dotted #a8b8d0;
+    color: var(--text-muted);
+    border-bottom: 3px dotted var(--border);
     margin: 50px 0 25px;
     padding-bottom: 4px;
     display: flex;
@@ -633,19 +859,19 @@ body.newjeans-mode .section-label {
 }
 body.newjeans-mode .section-label::before {
     content: '★';
-    color: #ff5e7e;
+    color: var(--border-hover);
 }
 
-/* ── 5. TECH CARDS (Dynamic Sticker Effects) ── */
+/* ── 5. TECH CARDS ── */
 body.newjeans-mode .card {
-    background: #ffffff;
-    border: 2px solid #2b5c8f;
+    background: var(--surface);
+    border: 2px solid var(--border);
     border-radius: 20px;
     padding: 14px 22px;
     font-weight: 700;
     font-size: 0.95rem;
-    color: #2b5c8f;
-    box-shadow: 4px 4px 0px #2b5c8f;
+    color: var(--text-main);
+    box-shadow: 4px 4px 0px var(--border);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -653,44 +879,44 @@ body.newjeans-mode .card {
     transition: all 0.2s ease;
 }
 
-/* Automatic Color Inversion to Denim Blue without editing HTML */
 body.newjeans-mode .card img {
+    filter: brightness(0) saturate(100%) invert(75%) sepia(15%) saturate(800%) hue-rotate(195deg);
+}
+body.newjeans-mode.light-mode .card img {
     filter: brightness(0) saturate(100%) invert(31%) sepia(34%) saturate(1215%) hue-rotate(173deg) brightness(93%) contrast(91%);
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 body.newjeans-mode .card:hover {
-    background: #fff5f7;
-    border-color: #ff5e7e;
-    color: #ff5e7e;
-    box-shadow: 4px 4px 0px #ff5e7e;
+    background: rgba(229, 153, 184, 0.08);
+    border-color: var(--border-hover);
+    color: var(--border-hover);
+    box-shadow: 4px 4px 0px var(--border-hover);
     transform: translateY(-3px) scale(1.02);
 }
 
-/* Swaps icon to Pop Pink on hover + gives it a graphic twist */
 body.newjeans-mode .card:hover img {
-    filter: brightness(0) saturate(100%) invert(53%) sepia(59%) saturate(4156%) hue-rotate(325deg) brightness(101%) contrast(101%);
+    filter: brightness(0) saturate(100%) invert(74%) sepia(18%) saturate(1200%) hue-rotate(305deg);
     transform: rotate(15deg) scale(1.2);
 }
 
 /* ── 6. PROJECTS ── */
 body.newjeans-mode .project-item {
-    border: 2.5px solid #2b5c8f;
-    border-left: 8px solid #ff5e7e; 
-    background: #ffffff;
+    border: 2.5px solid var(--border);
+    border-left: 8px solid var(--border-hover); 
+    background: var(--surface);
     border-radius: 20px;
     padding: 22px;
-    box-shadow: 5px 5px 0px #2b5c8f;
+    box-shadow: 5px 5px 0px var(--border);
 }
 
 body.newjeans-mode .project-title {
     font-weight: 800;
-    color: #2b5c8f;
+    color: var(--text-main);
     font-size: 1.05rem;
 }
 
 body.newjeans-mode .project-desc {
-    color: #4c6889;
+    color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.6;
     margin-top: 8px;
@@ -699,22 +925,22 @@ body.newjeans-mode .project-desc {
 body.newjeans-mode .category-tag {
     font-family: 'VT323', monospace;
     font-size: 1.25rem;
-    color: #ff5e7e;
+    color: var(--border-hover);
 }
 
 body.newjeans-mode .tech-tag {
     font-family: 'VT323', monospace;
     font-size: 1.1rem;
-    background: #e0f2fe;
-    color: #2b5c8f;
-    border: 1.5px solid #2b5c8f;
+    background: rgba(140, 160, 255, 0.05);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     padding: 1px 10px;
 }
 
 /* ── 7. FOOTER & UTILITY ── */
 body.newjeans-mode footer {
-    border-top: 3px dashed #a8b8d0;
+    border-top: 3px dashed var(--border);
     margin-top: 70px;
     padding-top: 40px;
     text-align: center;
@@ -723,39 +949,35 @@ body.newjeans-mode footer {
 body.newjeans-mode .footer-label {
     font-family: 'VT323', monospace;
     font-size: 1.35rem;
-    color: #5b7c9f;
+    color: var(--text-muted);
 }
 
 body.newjeans-mode .btn-small {
     font-family: 'VT323', monospace;
     font-size: 1.15rem;
-    background: #ffffff;
-    color: #2b5c8f;
-    border: 1.5px solid #2b5c8f;
+    background: var(--surface);
+    color: var(--text-main);
+    border: 1.5px solid var(--border);
     border-radius: 20px;
     padding: 3px 14px;
-    box-shadow: 2.5px 2.5px 0px #2b5c8f;
+    box-shadow: 2.5px 2.5px 0px var(--border);
     transition: all 0.1s ease;
 }
 
 body.newjeans-mode .btn-small:hover {
-    background: #ffb3c6;
+    background: var(--border-hover);
     color: #ffffff;
-    box-shadow: 1px 1px 0px #2b5c8f;
+    box-shadow: 1px 1px 0px var(--border);
     transform: translate(1.5px, 1.5px);
 }
 
-/* ── 8. CUSTOM CANDY-COLORED SCROLLBAR ── */
-body.newjeans-mode::-webkit-scrollbar {
-    width: 12px;
-}
-body.newjeans-mode::-webkit-scrollbar-track {
-    background: #e0e7ff;
-}
+/* ── 8. CUSTOM SCROLLBAR ── */
+body.newjeans-mode::-webkit-scrollbar { width: 12px; }
+body.newjeans-mode::-webkit-scrollbar-track { background: var(--surface); }
 body.newjeans-mode::-webkit-scrollbar-thumb {
-    background-color: #ff5e7e;
+    background-color: var(--border-hover);
     border-radius: 6px;
-    border: 3px solid #e0e7ff;
+    border: 3px solid var(--surface);
 }
 
 /* ── 9. STICKER ANIMATIONS ── */
@@ -764,10 +986,7 @@ body.newjeans-mode::-webkit-scrollbar-thumb {
     100% { transform: translateY(-15px) rotate(-20deg); }
 }
 
-/* Hide background margin stickers on small mobile screens to keep layout clean */
 @media (max-width: 900px) {
     body.newjeans-mode::before,
-    body.newjeans-mode::after {
-        display: none;
-    }
+    body.newjeans-mode::after { display: none; }
 }
