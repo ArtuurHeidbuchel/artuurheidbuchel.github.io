@@ -1,12 +1,9 @@
-/* ============================================================
-   style.css — All styles in one file, split by section comments
-   ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght=0,300;0,400;0,500;1,300;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
 /* ============================================================
-   SECTION 1: Variables & Light Mode
+   SECTION 1: variables en lightmode
    ============================================================ */
 
 :root {
@@ -36,7 +33,7 @@ body.light-mode {
 }
 
 /* ============================================================
-   SECTION 2: Reset & Base
+   SECTION 2: reset en base
    ============================================================ */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,7 +50,7 @@ body {
 
 .container { max-width: 700px; width: 100%; }
 
-/* ── Fixed Controls Container (Top Right) ── */
+/*style keuze buttons + light/darkmode toggle container*/
 .controls-container {
     position: fixed;
     top: 20px;
@@ -65,14 +62,14 @@ body {
     z-index: 100;
 }
 
-/* Container just for the style buttons */
+/* container voor enkel de style buttons*/
 .style-buttons {
     display: flex;
     flex-direction: column; 
     gap: 6px; 
 }
 
-/* Base style for ALL control buttons to make them perfectly round */
+/* base style voor alle control buttons*/
 .controls-container button {
     background: transparent;
     border: 1px solid var(--border);
@@ -89,7 +86,6 @@ body {
     padding: 0;
 }
 
-/* Slight style tweak specifically for the theme toggle icon size */
 #theme-toggle {
     color: var(--text-main);
     font-size: 1.1rem;
@@ -101,7 +97,6 @@ body {
     color: var(--white); 
 }
 
-/* ── Header ── */
 header { text-align: center; margin-bottom: 50px; }
 
 h1 {
@@ -116,7 +111,6 @@ h1 {
 .sub-header { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 4px; }
 .bio { margin-top: 20px; font-size: 0.95rem; line-height: 1.6; color: var(--text-main); }
 
-/* ── Nav ── */
 nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
 
 .link {
@@ -131,7 +125,6 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
 }
 .link:hover { border-color: var(--border-hover); background: var(--surface); color: var(--white); }
 
-/* ── Sections ── */
 .section-label {
     color: var(--section-label-color, var(--text-muted));
     text-transform: lowercase;
@@ -142,7 +135,6 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
     transition: color 0.3s;
 }
 
-/* ── Grid & Cards ── */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -165,7 +157,7 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
     transition: filter 0.2s;
 }
 
-/* ── Projects ── */
+/* alles voor projects */
 .project-category { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .category-tag { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; }
 
@@ -177,7 +169,6 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
 .project-title { color: var(--white); font-weight: bold; display: block; margin-bottom: 4px; }
 .project-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
 
-/* ── Tech Tags ── */
 .tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 .tech-tag {
@@ -190,7 +181,7 @@ nav.links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; 
     transition: 0.2s;
 }
 
-/* ── Footer ── */
+/* footer */
 footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 30px; }
 .footer-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px; }
 .utility-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
@@ -206,7 +197,6 @@ footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--borde
 }
 .btn-small:hover { border-color: var(--border-hover); color: var(--white); }
 
-/* ── Responsive ── */
 @media (max-width: 600px) {
     .project-category { grid-template-columns: 1fr; }
     h1 { font-size: 1.8rem; }
@@ -214,23 +204,21 @@ footer { margin-top: 80px; text-align: center; border-top: 1px solid var(--borde
 
 
 /* ============================================================
-   SECTION 3: Unchild Mode — HOT PINK MAXIMALIST PUNK
+   SECTION 3: Unchild Mode — geinspireerd door de kpop groep unchild
    ============================================================ */
 
-/* ── 3A. DEFAULT UNCHILD STATE (DARK VINYL UNDERGROUND) ── */
 body.unchild-mode {
-    /* TEXTURED BACKGROUND: Half-tone Xerox Dot Matrix & Deep Charcoal */
+    /* achtergrond */
     background-image: 
         radial-gradient(rgba(255, 45, 120, 0.15) 15%, transparent 16%),
         linear-gradient(135deg, #0d0d11 0%, #17121a 100%);
     background-size: 16px 16px, auto;
     background-attachment: fixed;
 
-    /* Raw Punk Cyber Variables */
     --bg: #0d0d11;
     --surface: #1c1921;
-    --border: #ff2d78; /* Hot Pink Outlines */
-    --border-hover: #b8ff00; /* Toxic Lime Accent */
+    --border: #ff2d78;
+    --border-hover: #b8ff00;
     --text-main: #ffffff;
     --text-muted: #a6a0b5;
     --white: #ffffff;
@@ -241,16 +229,15 @@ body.unchild-mode {
     overflow-x: hidden;
 }
 
-/* ── 3B. UNCHILD LIGHT MODE OVERRIDE (LOUD POSTER ZINE) ── */
+/* unchild mode lightmode */
 body.unchild-mode.light-mode {
-    /* Screen-printed halftone pattern on screaming pink */
     background-image: 
         radial-gradient(rgba(0, 0, 0, 0.12) 15%, transparent 16%),
         linear-gradient(135deg, #ff2d78 0%, #ff4a8d 100%);
     background-size: 14px 14px, auto;
 
     --bg: #ff2d78;
-    --surface: #fffdf5; /* Crisp newsprint white */
+    --surface: #fffdf5;
     --border: #000000;
     --border-hover: #b8ff00;
     --text-main: #000000;
@@ -260,9 +247,6 @@ body.unchild-mode.light-mode {
     --section-label-color: #000000;
 }
 
-/* ── 3C. COMPONENT STYLING ── */
-
-/* Shredded/Asymmetric Header Wrapper */
 body.unchild-mode header {
     background: var(--border-hover);
     color: #000000;
@@ -272,7 +256,7 @@ body.unchild-mode header {
     margin-bottom: 50px;
     transform: rotate(-1.5deg);
     position: relative;
-    border-radius: 0px; /* Hard edges for brutalism */
+    border-radius: 0px;
 }
 
 body.unchild-mode header::before {
@@ -297,7 +281,6 @@ body.unchild-mode h1 {
     text-transform: uppercase;
     color: #000000;
     margin: 0;
-    /* Clean text shadow that hits different depending on mode background */
     text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.8);
 }
 body.unchild-mode.light-mode h1 {
@@ -325,7 +308,6 @@ body.unchild-mode .bio {
     line-height: 1.5;
 }
 
-/* Hard-Edge Navigation Pill Grid */
 body.unchild-mode nav.links { 
     gap: 12px; 
     margin-bottom: 40px;
@@ -340,7 +322,7 @@ body.unchild-mode .link {
     color: var(--text-main);
     border: 3px solid var(--border);
     box-shadow: 5px 5px 0px var(--border);
-    border-radius: 0px; /* Pure geometric block */
+    border-radius: 0px;
     padding: 10px 22px;
     transition: all 0.1s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -353,7 +335,6 @@ body.unchild-mode .link:hover {
     transform: translate(3px, 3px);
 }
 
-/* Heavy Section Tapes */
 body.unchild-mode .section-label {
     font-family: 'Arial Black', Impact, sans-serif;
     text-transform: uppercase;
@@ -365,7 +346,6 @@ body.unchild-mode .section-label {
     margin: 50px 0 25px;
 }
 
-/* Pure Brutalist Grid Cards */
 body.unchild-mode .card {
     background: var(--surface);
     border: 3px solid var(--border);
@@ -394,11 +374,10 @@ body.unchild-mode .card img {
     transition: transform 0.1s ease;
 }
 body.unchild-mode .card:hover img {
-    filter: invert(1); /* Force crisp black icon on lime hover */
+    filter: invert(1);
     transform: scale(1.1) rotate(-5deg);
 }
 
-/* Screen-print News Zine Project Cards */
 body.unchild-mode .project-item {
     background: var(--surface);
     border: 3px solid var(--border);
@@ -455,7 +434,6 @@ body.unchild-mode .tech-tag {
     padding: 2px 8px;
 }
 
-/* Footer Control Slams */
 body.unchild-mode footer { 
     border-top: 4px dashed var(--border); 
     margin-top: 80px;
@@ -492,14 +470,13 @@ body.unchild-mode .btn-small:hover {
     transform: translate(3px, 3px);
 }
 
-/* Control Knobs UI Customization */
 body.unchild-mode .controls-container button {
     font-size: 1.2rem;
     border: 3px solid var(--border);
     box-shadow: 4px 4px 0px var(--border);
     color: var(--text-main);
     background: var(--surface);
-    border-radius: 0px; /* Brutalist blocks over round badges */
+    border-radius: 0px;
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: 900;
     transition: all 0.1s ease;

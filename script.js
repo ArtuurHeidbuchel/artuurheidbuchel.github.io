@@ -2,7 +2,7 @@ const toggleBtn = document.getElementById('theme-toggle');
 const themeIcon = document.getElementById('theme-icon');
 const body = document.body;
 
-// ── Get the new style buttons ──
+// style buttons
 const btnDefault = document.getElementById('style-default');
 const btnUnchild = document.getElementById('style-unchild');
 const btnNewjeans = document.getElementById('style-newjeans');
@@ -13,7 +13,7 @@ function clearStyleClasses() {
     body.classList.remove('unchild-mode', 'newjeans-mode');
 }
 
-// Applies the CSS classes based on the selected style
+// applied css styles op basis van de geselecteerde style
 function applyStyle(style) {
     clearStyleClasses();
     if (STYLE_CLASSES[style]) {
@@ -25,20 +25,14 @@ function updateThemeIcon() {
     themeIcon.textContent = body.classList.contains('light-mode') ? '☀' : '☾';
 }
 
-// Handles the click event for styles, including saving and overriding light mode
+// handled click events om van style te switchen, inclusief light mode dark mode
 function switchStyle(nextStyle) {
     applyStyle(nextStyle);
     localStorage.setItem('style', nextStyle);
 
-    // ONLY Unchild mode completely overrides light mode now
-    if (nextStyle === 'unchild') {
-        body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark');
-        updateThemeIcon();
-    }
 }
 
-// ── Restore saved state ──
+// saved style keuze in local storage
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'light') {
     body.classList.add('light-mode');
@@ -48,7 +42,7 @@ if (savedTheme === 'light') {
 const savedStyle = localStorage.getItem('style') || 'default';
 applyStyle(savedStyle);
 
-// ── Dark/light toggle ──
+// dark mode light mode toggle
 toggleBtn.addEventListener('click', () => {
     body.classList.toggle('light-mode');
     const theme = body.classList.contains('light-mode') ? 'light' : 'dark';
@@ -56,7 +50,7 @@ toggleBtn.addEventListener('click', () => {
     updateThemeIcon();
 });
 
-// ── Button Listeners ──
+// button listeners
 btnDefault.addEventListener('click', () => switchStyle('default'));
 btnUnchild.addEventListener('click', () => switchStyle('unchild'));
 btnNewjeans.addEventListener('click', () => switchStyle('newjeans'));
