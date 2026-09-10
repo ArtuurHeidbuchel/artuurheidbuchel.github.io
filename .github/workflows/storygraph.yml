@@ -1,0 +1,36 @@
+name: Scrape Storygraph
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs twice a day (Midnight and Noon UTC)
+  workflow_dispatch:
+
+jobs:
+  update-reading:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install curl_cffi beautifulsoup4
+
+      - name: Run Scraper
+        run: python scrape_storygraph.py
+
+      - name: Commit and Push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add storygraph.json
+          # Only commit if the scraper found new data and changed the file
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: update currently reading book"
+          git push

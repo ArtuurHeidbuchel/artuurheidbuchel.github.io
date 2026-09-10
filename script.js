@@ -1,56 +1,80 @@
-const toggleBtn = document.getElementById('theme-toggle');
-const themeIcon = document.getElementById('theme-icon');
-const body = document.body;
+// --- 1. LETTERBOXD (Title & Image) ---
+const letterboxdRSS = 'https://letterboxd.com/Artuur_H/rss/';
+const rss2jsonUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(letterboxdRSS)}`;
 
-// style buttons
-const btnDefault = document.getElementById('style-default');
-const btnUnchild = document.getElementById('style-unchild');
-const btnNewjeans = document.getElementById('style-newjeans');
+fetch(rss2jsonUrl)
+    .then(response => response.json())
+    .then(data => {
+        if (data.items && data.items.length > 0) {
+            const latestFilm = data.items[0];
+            
+            document.getElementById('letterboxd-title').textContent = latestFilm.title;
 
-const STYLE_CLASSES = { unchild: 'unchild-mode', newjeans: 'newjeans-mode' };
+            const imgMatch = latestFilm.description.match(/src="([^"]+)"/);
+            if (imgMatch && imgMatch[1]) {
+                const imgElement = document.getElementById('letterboxd-img');
+                imgElement.src = imgMatch[1];
+                imgElement.style.display = 'block';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching Letterboxd:', error);
+        document.getElementById('letterboxd-title').textContent = 'Failed to load';
+    });
 
-function clearStyleClasses() {
-    body.classList.remove('unchild-mode', 'newjeans-mode');
+
+// --- 2. LAST.FM (Top artist this week) ---
+const lastfmUsername = 'Artuur_-';
+const lastfmApiKey = 'a9b87172fb563505996c4ba2dcbcbe73'; 
+const lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastfmUsername}&period=7day&api_key=${lastfmApiKey}&format=json&limit=1`;
+
+if (lastfmApiKey !== 'YOUR_API_KEY_HERE') {
+    fetch(lastfmUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.topalbums && data.topalbums.album.length > 0) {
+                const topAlbum = data.topalbums.album[0];
+                
+                // Set text to "AlbumName by ArtistName"
+                document.getElementById('lastfm-artist').textContent = `${topAlbum.name} by ${topAlbum.artist.name}`;
+                
+                // Last.fm returns an array of images. We want the 'extralarge' one for best quality.
+                const imgData = topAlbum.image.find(img => img.size === 'extralarge') || topAlbum.image[topAlbum.image.length - 1];
+                
+                if (imgData && imgData['#text']) {
+                    const imgElement = document.getElementById('lastfm-img');
+                    imgElement.src = imgData['#text'];
+                    imgElement.style.display = 'block'; // Unhide the image
+                }
+            } else {
+                document.getElementById('lastfm-artist').textContent = 'Nothing this week';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching Last.fm:', error);
+            document.getElementById('lastfm-artist').textContent = 'Failed to load';
+        });
+} else {
+    document.getElementById('lastfm-artist').textContent = 'API key needed';
 }
 
-// applied css styles op basis van de geselecteerde style
-function applyStyle(style) {
-    clearStyleClasses();
-    if (STYLE_CLASSES[style]) {
-        body.classList.add(STYLE_CLASSES[style]);
-    }
-}
-
-function updateThemeIcon() {
-    themeIcon.textContent = body.classList.contains('light-mode') ? '☀' : '☾';
-}
-
-// handled click events om van style te switchen, inclusief light mode dark mode
-function switchStyle(nextStyle) {
-    applyStyle(nextStyle);
-    localStorage.setItem('style', nextStyle);
-
-}
-
-// saved style keuze in local storage
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'light') {
-    body.classList.add('light-mode');
-    updateThemeIcon();
-}
-
-const savedStyle = localStorage.getItem('style') || 'default';
-applyStyle(savedStyle);
-
-// dark mode light mode toggle
-toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('light-mode');
-    const theme = body.classList.contains('light-mode') ? 'light' : 'dark';
-    localStorage.setItem('theme', theme);
-    updateThemeIcon();
-});
-
-// button listeners
-btnDefault.addEventListener('click', () => switchStyle('default'));
-btnUnchild.addEventListener('click', () => switchStyle('unchild'));
-btnNewjeans.addEventListener('click', () => switchStyle('newjeans'));
+// --- 3. STORYGRAPH (Fetched from local JSON built by GitHub Actions) ---
+fetch('./storygraph.json')
+    .then(response => {
+        if (!response.ok) throw new Error('Data not found');
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('storygraph-title').textContent = data.title;
+        
+        if (data.image) {
+            const imgElement = document.getElementById('storygraph-img');
+            imgElement.src = data.image;
+            imgElement.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.log('Storygraph scraper hasn\'t run yet:', error);
+        document.getElementById('storygraph-title').textContent = 'Waiting for GitHub Action...';
+    });
