@@ -395,3 +395,33 @@ footer {
     filter: brightness(0.85);
   }
 }
+
+/* ---------------------------------------------
+   dark mode (toggled via class)
+--------------------------------------------- */
+body.dark-theme {
+  /* Swap the cream backgrounds for dark ink */
+  --cream: #1A1209;
+  --cream-soft: #2B1D0E;
+  
+  /* Swap the dark ink text for cream */
+  --ink: #FBF3E1;
+  --ink-soft: #C2B29A;
+  --ink-faint: #8A7247;
+  
+  /* Dim the lines */
+  --line: rgba(251, 243, 225, 0.1);
+  --line-strong: rgba(251, 243, 225, 0.25);
+}
+
+/* Dim images slightly so they aren't blinding on dark backgrounds */
+body.dark-theme img {
+  filter: brightness(0.85);
+}
+
+/* Small specific style for the button so it looks clickable */
+#theme-toggle {
+  margin-top: 1.5rem;
+  cursor: pointer;
+  background: transparent;
+}

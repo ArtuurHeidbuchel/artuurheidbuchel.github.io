@@ -78,3 +78,27 @@ fetch('./storygraph.json')
         console.log('Storygraph scraper hasn\'t run yet:', error);
         document.getElementById('storygraph-title').textContent = 'Waiting for GitHub Action...';
     });
+
+
+// --- THEME TOGGLE ---
+const themeToggle = document.getElementById('theme-toggle');
+
+const currentTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
+    document.body.classList.add('dark-theme');
+    themeToggle.textContent = 'toggle light mode';
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    
+    if (document.body.classList.contains('dark-theme')) {
+        localStorage.setItem('theme', 'dark');
+        themeToggle.textContent = 'toggle light mode';
+    } else {
+        localStorage.setItem('theme', 'light');
+        themeToggle.textContent = 'toggle dark mode';
+    }
+});
