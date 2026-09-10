@@ -56,6 +56,8 @@ a { color: inherit; }
   position: fixed;
   z-index: -1;
   pointer-events: none;
+  will-change: transform;
+  transition: transform 0.2s ease-out;
 }
 
 .bg-shape-1 {
@@ -66,6 +68,7 @@ a { color: inherit; }
   background: var(--amber);
   opacity: 0.05;
   clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform: translate3d(calc(var(--mx, 0) * -1px), calc(var(--scroll-y, 0) * -0.04px), 0);
 }
 
 .bg-shape-2 {
@@ -76,8 +79,30 @@ a { color: inherit; }
   background: var(--gold);
   opacity: 0.08;
   clip-path: polygon(100% 0, 100% 100%, 0 40%);
+  transform: translate3d(calc(var(--mx, 0) * 1px), calc(var(--scroll-y, 0) * 0.06px), 0);
 }
 
+.bg-shape-3 {
+  top: -8vh;
+  left: 20vw;
+  width: 25vw;
+  height: 35vh;
+  background: var(--honey);
+  opacity: 0.12;
+  clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
+  transform: translate3d(calc(var(--mx, 0) * 0.5px), calc(var(--scroll-y, 0) * -0.02px), 0);
+}
+
+.bg-shape-4 {
+  bottom: 5vh;
+  right: 8vw;
+  width: 18vw;
+  height: 18vw;
+  background: var(--amber);
+  opacity: 0.15;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  transform: translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--scroll-y, 0) * 0.03px), 0);
+}
 
 /* ---------------------------------------------
    layout
@@ -133,11 +158,21 @@ header::before {
   clip-path: polygon(45% 0, 100% 0, 100% 100%, 15% 100%);
   z-index: -1;
   opacity: 0.9;
+  transform: translate3d(calc(var(--mx, 0) * 0.6px), calc(var(--my, 0) * 0.6px), 0);
+  transition: transform 0.2s ease-out;
 }
 
 @media (min-width: 900px) {
   header::before {
     right: -2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-shape,
+  header::before {
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -191,15 +226,6 @@ header .bio {
 /* ---------------------------------------------
    nav links
 --------------------------------------------- */
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin: 2.75rem 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
 .links .link {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -207,15 +233,30 @@ header .bio {
   color: var(--ink);
   padding: 0.85rem 1.1rem;
   border-right: 1px solid var(--line);
-  transition: background 0.15s ease, color 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: color 0.25s ease;
 }
 
-.links .link:last-child { border-right: none; }
+.links .link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  clip-path: polygon(0 100%, 0 100%, 0 100%, 0 100%);
+  transition: clip-path 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
+}
 
 .links .link:hover,
 .links .link:focus-visible {
-  background: var(--amber);
   color: var(--cream);
+}
+
+.links .link:hover::before,
+.links .link:focus-visible::before {
+  clip-path: polygon(0 100%, 100% 40%, 100% 0, 0 0);
 }
 
 /* ---------------------------------------------
@@ -237,10 +278,15 @@ header .bio {
   gap: 0.65rem;
   font-size: 0.92rem;
   clip-path: polygon(0 0, 100% 0, 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.25s ease, box-shadow 0.25s ease, clip-path 0.25s ease;
 }
 
-.card:hover { background: #EFDFB8; }
+.card:hover {
+  background: #EFDFB8;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(43, 29, 14, 0.14);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
 
 .card img { display: block; flex: none; }
 
@@ -273,6 +319,7 @@ header .bio {
   object-position: center 20%;
   border-top: 1px solid var(--line);
   margin-top: auto;
+  display: none;
 }
 
 /* ---------------------------------------------
@@ -295,6 +342,12 @@ header .bio {
   background: var(--cream-soft);
   clip-path: polygon(0 0, 100% 0, 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
   margin-bottom: 0.75rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-item:hover {
+  transform: translateX(4px);
+  box-shadow: -3px 0 0 var(--amber);
 }
 
 .project-title {
@@ -352,14 +405,31 @@ footer {
   border: 1px solid var(--line-strong);
   padding: 0.45rem 0.8rem;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn-small::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  clip-path: polygon(0 100%, 0 100%, 0 100%, 0 100%);
+  transition: clip-path 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
 }
 
 .btn-small:hover,
 .btn-small:focus-visible {
-  background: var(--ink);
-  border-color: var(--ink);
   color: var(--cream);
+  border-color: var(--ink);
+}
+
+.btn-small:hover::before,
+.btn-small:focus-visible::before {
+  clip-path: polygon(0 100%, 100% 40%, 100% 0, 0 0);
 }
 
 /* ---------------------------------------------
@@ -375,28 +445,94 @@ footer {
    dark mode (toggled via class)
 --------------------------------------------- */
 body.dark-theme {
-  /* Swap the cream backgrounds for dark ink */
   --cream: #1A1209;
   --cream-soft: #2B1D0E;
   
-  /* Swap the dark ink text for cream */
   --ink: #FBF3E1;
   --ink-soft: #C2B29A;
   --ink-faint: #8A7247;
   
-  /* Dim the lines */
   --line: rgba(251, 243, 225, 0.1);
   --line-strong: rgba(251, 243, 225, 0.25);
 }
 
-/* Dim images slightly so they aren't blinding on dark backgrounds */
+body.dark-theme .card:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
 body.dark-theme img {
   filter: brightness(0.85);
 }
 
-/* Small specific style for the button so it looks clickable */
 #theme-toggle {
   margin-top: 1.5rem;
   cursor: pointer;
   background: transparent;
+}
+
+/* ---------------------------------------------
+   scroll reveal
+--------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------
+   loading skeleton
+--------------------------------------------- */
+.media-info span.is-loading {
+  display: inline-block;
+  width: 70%;
+  height: 0.95rem;
+  border-radius: 2px;
+  color: transparent;
+  background: linear-gradient(
+    100deg,
+    var(--cream-soft) 30%,
+    rgba(217, 125, 31, 0.18) 50%,
+    var(--cream-soft) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.media-img.is-loading {
+  background: linear-gradient(
+    100deg,
+    var(--cream-soft) 30%,
+    rgba(217, 125, 31, 0.18) 50%,
+    var(--cream-soft) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  display: block !important;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-info span.is-loading,
+  .media-img.is-loading {
+    animation: none;
+    background: var(--cream-soft);
+  }
 }
