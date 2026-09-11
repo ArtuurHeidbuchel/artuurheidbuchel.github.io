@@ -227,6 +227,7 @@ header .bio {
    nav links
 --------------------------------------------- */
 .links .link {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   text-decoration: none;
@@ -260,7 +261,7 @@ header .bio {
 }
 
 /* ---------------------------------------------
-   grid / cards (now, languages & tools)
+   grid / cards
 --------------------------------------------- */
 .grid {
   display: grid;
@@ -277,6 +278,7 @@ header .bio {
   align-items: center;
   gap: 0.65rem;
   font-size: 0.92rem;
+  text-decoration: none;
   clip-path: polygon(0 0, 100% 0, 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
   transition: background 0.15s ease, transform 0.25s ease, box-shadow 0.25s ease, clip-path 0.25s ease;
 }
@@ -457,6 +459,7 @@ body.dark-theme {
 }
 
 body.dark-theme .card:hover {
+  background: #382715;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -468,6 +471,10 @@ body.dark-theme img {
   margin-top: 1.5rem;
   cursor: pointer;
   background: transparent;
+}
+
+body.dark-theme .card img:not(.media-img) {
+  filter: invert(1) brightness(0.9) sepia(0.3);
 }
 
 /* ---------------------------------------------
