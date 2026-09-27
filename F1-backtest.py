@@ -14,13 +14,14 @@ Stdlib only (urllib), so no extra dependencies in the Actions runner.
 import json
 import os
 import time
+import traceback
 import urllib.request
 import urllib.error
 from datetime import datetime, timezone
 
 API = "https://api.jolpi.ca/ergast/f1"
 OUTPUT_PATH = os.path.join("data", "f1-accuracy.json")  # relative to repo root
-SLEEP_SECONDS = 0.3  # stay comfortably under the API's burst limit
+SLEEP_SECONDS = 0.4  # stay comfortably under the API's burst limit
 
 # Keep this identical to the WEIGHTS object in predictions.html.
 WEIGHTS = {
@@ -31,13 +32,23 @@ WEIGHTS = {
 }
 
 
-def get_json(url, retries=3):
+def get_json(url, retries=5):
     req = urllib.request.Request(url, headers={"User-Agent": "f1-predictor-backtest/1.0 (+github-actions)"})
     for attempt in range(retries):
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return json.loads(resp.read().decode("utf-8"))
-        except (urllib.error.URLError, urllib.error.HTTPError) as e:
+        except urllib.error.HTTPError as e:
+            if attempt == retries - 1:
+                raise
+            if e.code == 429:
+                # Rate-limited — back off much longer, and honor Retry-After if given.
+                wait = int(e.headers.get("Retry-After", 8)) if e.headers else 8
+                print(f"Rate limited on {url}, waiting {wait}s (attempt {attempt + 1}/{retries})")
+                time.sleep(wait)
+            else:
+                time.sleep(1 + attempt)
+        except urllib.error.URLError:
             if attempt == retries - 1:
                 raise
             time.sleep(1 + attempt)
@@ -225,9 +236,9 @@ def main():
                 "avg_rank_error": round(m_err, 2) if m_err is not None else None,
             })
         except Exception as e:
-            # Log and skip — one odd round (data gap, schema quirk) shouldn't
-            # take down the whole run.
+
             print(f"Skipping round {round_number} ({race.get('raceName')}): {e}")
+            traceback.print_exc()
             continue
 
     def pct(values):
