@@ -33,7 +33,7 @@
                 <p class="section-label">model weights</p>
                 <div class="weights" id="weightsDisplay"></div>
                 <p class="bio" style="margin-top:1.2rem;">
-                    Built from this season's form, points, and history at this circuit. Note that
+                    Built from this season's form, points, and history at this circuit &mdash;
                     it doesn't know about qualifying, weather, or reliability, so treat it as
                     a rough guide shaped by the recent past, not a forecast.
                 </p>
@@ -63,6 +63,10 @@
     (function(){
       "use strict";
 
+      // Keep this page's theme in sync with the rest of the site.
+      // Assumes the same convention as script.js: localStorage key
+      // "theme" set to "dark"/"light", toggling a .dark-theme class
+      // on <body>. Adjust here if script.js does it differently.
       try{
         if(localStorage.getItem("theme") === "dark"){
           document.body.classList.add("dark-theme");
@@ -254,20 +258,39 @@
             return;
           }
 
-          const driverIds = driverStandings.map(d => d.Driver.driverId);
-          const driverMeta = {};
+          // Points/rank lookups, keyed by driverId — but NOT the source of
+          // truth for who's currently racing. A driver who scored points
+          // earlier this season but has since been replaced would otherwise
+          // linger in the prediction forever.
+          const standingsByDriver = {};
           driverStandings.forEach(d => {
-            driverMeta[d.Driver.driverId] = {
-              name: `${d.Driver.givenName} ${d.Driver.familyName}`,
-              team: d.Constructors?.[0]?.name || "—",
-              constructorId: d.Constructors?.[0]?.constructorId,
+            standingsByDriver[d.Driver.driverId] = {
               points: d.points,
-              standingRank: Number(d.position)
+              standingRank: Number(d.position),
+              constructorId: d.Constructors?.[0]?.constructorId
             };
           });
-
           const constructorRank = {};
           constructorStandings.forEach(c => { constructorRank[c.Constructor.constructorId] = Number(c.position); });
+
+          // Current grid: whoever actually lined up in the most recent
+          // race. That's the roster we predict for.
+          let driverIds, driverMeta = {};
+          if(completed.length){
+            const lastRound = completed[completed.length - 1].round;
+            const lastRoundData = await getJSON(`${API}/${year}/${lastRound}/results.json`);
+            const lastResults = lastRoundData?.MRData?.RaceTable?.Races?.[0]?.Results || [];
+            driverIds = lastResults.map(r => r.Driver.driverId);
+            lastResults.forEach(r => {
+              driverMeta[r.Driver.driverId] = { name: `${r.Driver.givenName} ${r.Driver.familyName}`, team: r.Constructor.name };
+            });
+          } else {
+            // Preseason fallback — nobody's raced yet, so fall back to standings (likely also empty).
+            driverIds = driverStandings.map(d => d.Driver.driverId);
+            driverStandings.forEach(d => {
+              driverMeta[d.Driver.driverId] = { name: `${d.Driver.givenName} ${d.Driver.familyName}`, team: d.Constructors?.[0]?.name || "—" };
+            });
+          }
 
           setStatus("Averaging the last few races…");
           const recentForm = completed.length ? await getRecentFormAvg(year, completed) : {};
@@ -275,8 +298,11 @@
           setStatus("Checking history at " + race.Circuit.circuitName + "…");
           const { avg: trackHistory, hasHistory } = await getTrackHistoryAvg(race.Circuit.circuitId, year);
 
-          const standingsValues = {}; driverIds.forEach(id => standingsValues[id] = driverMeta[id].standingRank);
-          const teamValues = {}; driverIds.forEach(id => teamValues[id] = constructorRank[driverMeta[id].constructorId] ?? 99);
+          const standingsValues = {}; driverIds.forEach(id => standingsValues[id] = standingsByDriver[id]?.standingRank);
+          const teamValues = {}; driverIds.forEach(id => {
+            const cid = standingsByDriver[id]?.constructorId;
+            teamValues[id] = cid ? constructorRank[cid] : undefined;
+          });
 
           const uStandings = rankToUnit(standingsValues, driverIds, 0.5);
           const uTeam = rankToUnit(teamValues, driverIds, 0.5);
@@ -288,7 +314,7 @@
 
           const rows = driverIds.map(id => {
             const score = uForm[id]*w.recentForm + uStandings[id]*w.standings + uTeam[id]*w.team + (uTrack ? uTrack[id]*w.track : 0);
-            return { id, name: driverMeta[id].name, team: driverMeta[id].team, points: driverMeta[id].points, score };
+            return { id, name: driverMeta[id].name, team: driverMeta[id].team, points: standingsByDriver[id]?.points ?? 0, score };
           }).sort((a,b) => a.score - b.score || b.points - a.points);
 
           renderBoard(rows);
@@ -330,7 +356,7 @@
             ${b.podium_precision ?? "—"}% podium precision, ${b.avg_rank_error ?? "—"} avg. position error.
           </p>`;
 
-        const rows = data.races.slice().reverse().slice(0, 10).map(r => `
+        const rows = data.races.slice().reverse().map(r => `
           <div class="race-history-row">
             <span class="hit-dot ${r.winner_hit ? "yes" : "no"}" title="${r.winner_hit ? "Predicted winner correctly" : "Missed the winner"}"></span>
             <span class="rname">${r.race_name}</span>
@@ -348,7 +374,7 @@
           renderAccuracy(data);
         }catch(e){
           document.getElementById("accuracyWrap").innerHTML =
-            `<p class="status-line">Backtest data isn't published yet. it runs weekly via GitHub Actions, or trigger it manually from the Actions tab.</p>`;
+            `<p class="status-line">Backtest data isn't published yet &mdash; it runs weekly via GitHub Actions, or trigger it manually from the Actions tab.</p>`;
         }
       }
 

@@ -151,7 +151,12 @@
   margin-bottom: 1.4rem;
 }
 
-.race-history { display: flex; flex-direction: column; }
+.race-history {
+  display: flex;
+  flex-direction: column;
+  max-height: 340px;
+  overflow-y: auto;
+}
 .race-history-row {
   display: flex;
   align-items: center;
