@@ -19,7 +19,7 @@ import urllib.error
 from datetime import datetime, timezone
 
 API = "https://api.jolpi.ca/ergast/f1"
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "f1-accuracy.json")
+OUTPUT_PATH = os.path.join("data", "f1-accuracy.json")  # relative to repo root
 SLEEP_SECONDS = 0.3  # stay comfortably under the API's burst limit
 
 # Keep this identical to the WEIGHTS object in predictions.html.
