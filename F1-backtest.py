@@ -107,12 +107,19 @@ def get_standings_before(year, round_number):
     time.sleep(SLEEP_SECONDS)
     driver_rank = {}
     constructor_of = {}
-    for d in driver_data["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]:
-        driver_rank[d["Driver"]["driverId"]] = int(d["position"])
+    # The list is already returned in standing order, so use that order as the
+    # rank rather than trusting a "position" field — Jolpica doesn't always
+    # populate it the same way Ergast did (e.g. on tied points).
+    driver_list = driver_data["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
+    for rank, d in enumerate(driver_list, start=1):
+        driver_rank[d["Driver"]["driverId"]] = int(d.get("position", rank))
         constructor_of[d["Driver"]["driverId"]] = d["Constructors"][0]["constructorId"]
+
     constructor_rank = {}
-    for c in constructor_data["MRData"]["StandingsTable"]["StandingsLists"][0]["ConstructorStandings"]:
-        constructor_rank[c["Constructor"]["constructorId"]] = int(c["position"])
+    constructor_list = constructor_data["MRData"]["StandingsTable"]["StandingsLists"][0]["ConstructorStandings"]
+    for rank, c in enumerate(constructor_list, start=1):
+        constructor_rank[c["Constructor"]["constructorId"]] = int(c.get("position", rank))
+
     team_rank = {did: constructor_rank.get(cid, 99) for did, cid in constructor_of.items()}
     return driver_rank, team_rank
 
@@ -179,43 +186,49 @@ def main():
 
     for race in completed:
         round_number = int(race["round"])
-        prior_rounds = [int(r["round"]) for r in completed if int(r["round"]) < round_number]
+        try:
+            prior_rounds = [int(r["round"]) for r in completed if int(r["round"]) < round_number]
 
-        actual_data = get_json(f"{API}/{year}/{round_number}/results.json")
-        actual_races = actual_data["MRData"]["RaceTable"]["Races"]
-        if not actual_races:
+            actual_data = get_json(f"{API}/{year}/{round_number}/results.json")
+            actual_races = actual_data["MRData"]["RaceTable"]["Races"]
+            if not actual_races:
+                continue
+            actual_results = actual_races[0]["Results"]
+            driver_ids = [r["Driver"]["driverId"] for r in actual_results]
+            driver_names = {r["Driver"]["driverId"]: f"{r['Driver']['givenName']} {r['Driver']['familyName']}" for r in actual_results}
+            actual_order = sorted(driver_ids, key=lambda d: int(next(r["position"] for r in actual_results if r["Driver"]["driverId"] == d) or 20))
+            time.sleep(SLEEP_SECONDS)
+
+            recent_form = get_recent_form(year, prior_rounds) if prior_rounds else {}
+            driver_rank, team_rank = get_standings_before(year, round_number)
+            track_avg, has_track_history = get_track_history(race["Circuit"]["circuitId"], year)
+
+            predicted = predict_order(driver_ids, recent_form, driver_rank, team_rank, track_avg, has_track_history)
+            baseline = baseline_order(driver_ids, driver_rank)
+
+            m_hit, m_pod, m_err = score_prediction(predicted, actual_order)
+            b_hit, b_pod, b_err = score_prediction(baseline, actual_order)
+
+            model_hits.append(m_hit); model_podiums.append(m_pod)
+            if m_err is not None: model_errors.append(m_err)
+            base_hits.append(b_hit); base_podiums.append(b_pod)
+            if b_err is not None: base_errors.append(b_err)
+
+            per_race.append({
+                "round": round_number,
+                "race_name": race["raceName"],
+                "date": race["date"],
+                "predicted_winner": driver_names.get(predicted[0], predicted[0]),
+                "actual_winner": driver_names.get(actual_order[0], actual_order[0]),
+                "winner_hit": m_hit,
+                "podium_overlap": m_pod,
+                "avg_rank_error": round(m_err, 2) if m_err is not None else None,
+            })
+        except Exception as e:
+            # Log and skip — one odd round (data gap, schema quirk) shouldn't
+            # take down the whole run.
+            print(f"Skipping round {round_number} ({race.get('raceName')}): {e}")
             continue
-        actual_results = actual_races[0]["Results"]
-        driver_ids = [r["Driver"]["driverId"] for r in actual_results]
-        driver_names = {r["Driver"]["driverId"]: f"{r['Driver']['givenName']} {r['Driver']['familyName']}" for r in actual_results}
-        actual_order = sorted(driver_ids, key=lambda d: int(next(r["position"] for r in actual_results if r["Driver"]["driverId"] == d) or 20))
-        time.sleep(SLEEP_SECONDS)
-
-        recent_form = get_recent_form(year, prior_rounds) if prior_rounds else {}
-        driver_rank, team_rank = get_standings_before(year, round_number)
-        track_avg, has_track_history = get_track_history(race["Circuit"]["circuitId"], year)
-
-        predicted = predict_order(driver_ids, recent_form, driver_rank, team_rank, track_avg, has_track_history)
-        baseline = baseline_order(driver_ids, driver_rank)
-
-        m_hit, m_pod, m_err = score_prediction(predicted, actual_order)
-        b_hit, b_pod, b_err = score_prediction(baseline, actual_order)
-
-        model_hits.append(m_hit); model_podiums.append(m_pod)
-        if m_err is not None: model_errors.append(m_err)
-        base_hits.append(b_hit); base_podiums.append(b_pod)
-        if b_err is not None: base_errors.append(b_err)
-
-        per_race.append({
-            "round": round_number,
-            "race_name": race["raceName"],
-            "date": race["date"],
-            "predicted_winner": driver_names.get(predicted[0], predicted[0]),
-            "actual_winner": driver_names.get(actual_order[0], actual_order[0]),
-            "winner_hit": m_hit,
-            "podium_overlap": m_pod,
-            "avg_rank_error": round(m_err, 2) if m_err is not None else None,
-        })
 
     def pct(values):
         return round(100 * sum(1 for v in values if v) / len(values), 1) if values else None
