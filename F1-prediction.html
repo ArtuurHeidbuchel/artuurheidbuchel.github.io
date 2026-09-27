@@ -33,9 +33,8 @@
                 <p class="section-label">model weights</p>
                 <div class="weights" id="weightsDisplay"></div>
                 <p class="bio" style="margin-top:1.2rem;">
-                    Built from this season's form, points, and history at this circuit &mdash;
-                    it doesn't know about qualifying, weather, or reliability, so treat it as
-                    a rough guide shaped by the recent past, not a forecast.
+                    Built from this season's form, points, and history at this circuit. Note that
+                    it doesn't know about qualifying, weather, or reliability, and is also just wholey inaccurate... (for now!)
                 </p>
             </section>
         </div>
@@ -257,11 +256,6 @@
             setStatus("No standings published yet for " + year + " — check back once the season is under way.", true);
             return;
           }
-
-          // Points/rank lookups, keyed by driverId — but NOT the source of
-          // truth for who's currently racing. A driver who scored points
-          // earlier this season but has since been replaced would otherwise
-          // linger in the prediction forever.
           const standingsByDriver = {};
           driverStandings.forEach(d => {
             standingsByDriver[d.Driver.driverId] = {
@@ -273,8 +267,6 @@
           const constructorRank = {};
           constructorStandings.forEach(c => { constructorRank[c.Constructor.constructorId] = Number(c.position); });
 
-          // Current grid: whoever actually lined up in the most recent
-          // race. That's the roster we predict for.
           let driverIds, driverMeta = {};
           if(completed.length){
             const lastRound = completed[completed.length - 1].round;
@@ -285,7 +277,6 @@
               driverMeta[r.Driver.driverId] = { name: `${r.Driver.givenName} ${r.Driver.familyName}`, team: r.Constructor.name };
             });
           } else {
-            // Preseason fallback — nobody's raced yet, so fall back to standings (likely also empty).
             driverIds = driverStandings.map(d => d.Driver.driverId);
             driverStandings.forEach(d => {
               driverMeta[d.Driver.driverId] = { name: `${d.Driver.givenName} ${d.Driver.familyName}`, team: d.Constructors?.[0]?.name || "—" };
