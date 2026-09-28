@@ -30,12 +30,15 @@
             </header>
 
             <section>
-                <p class="section-label">model weights</p>
+                <p class="section-label">what the model looks at</p>
                 <div class="weights" id="weightsDisplay"></div>
                 <p class="bio" style="margin-top:1.2rem;">
-                    Built from this season's form, points, and history at this circuit. Note that
-                    it doesn't know about qualifying, weather, or reliability, and is also just wholey inaccurate... (for now!)
+                    An XGBoost model trained on past race results and qualifying times. Every race is
+                    predicted using only the races before it, and compared against two naive guesses:
+                    the starting grid and the championship order. It doesn't know about weather or
+                    reliability, and grid penalties given after qualifying aren't applied.
                 </p>
+                <a class="btn-small" href="https://github.com/ArtuurHeidbuchel/F1-Prediction-Model">source on github</a>
             </section>
         </div>
 
@@ -44,14 +47,14 @@
             <section class="first-section-desktop">
                 <p class="section-label">predicted result &mdash; <span id="raceName">&hellip;</span></p>
                 <div id="boardWrap">
-                    <p class="status-line" id="status">Pulling historical data&hellip;</p>
+                    <p class="status-line" id="status">Loading prediction&hellip;</p>
                 </div>
             </section>
 
             <section>
                 <p class="section-label">model accuracy <span id="accuracyMeta"></span></p>
                 <div id="accuracyWrap">
-                    <p class="status-line" id="accuracyStatus">Loading backtest results&hellip;</p>
+                    <p class="status-line">Loading backtest results&hellip;</p>
                 </div>
             </section>
         </div>
@@ -63,309 +66,188 @@
       "use strict";
 
       // Keep this page's theme in sync with the rest of the site.
-      // Assumes the same convention as script.js: localStorage key
-      // "theme" set to "dark"/"light", toggling a .dark-theme class
-      // on <body>. Adjust here if script.js does it differently.
       try{
         if(localStorage.getItem("theme") === "dark"){
           document.body.classList.add("dark-theme");
         }
       }catch(e){}
 
-      const API = "https://api.jolpi.ca/ergast/f1";
-      const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+      // The model repo's Action commits fresh CSVs here (GitHub's CDN caches them ~5 min).
+      const BASE = "https://raw.githubusercontent.com/ArtuurHeidbuchel/F1-Prediction-Model/main/output/";
+      const $ = id => document.getElementById(id);
+      const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+      const pretty = id => String(id || "").replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const fmt = (v, suffix) => (v === undefined || v === null || v === "") ? "—" : v + (suffix || "");
 
-      const WEIGHTS = {
-        recentForm: 0.35,
-        standings:  0.30,
-        team:       0.20,
-        track:      0.15
+      const FEATURE_LABELS = {
+        grid_clean: "Starting grid", drv_form5: "Driver form (last 5)", drv_dnf10: "Driver DNF rate",
+        drv_circuit_avg: "History at this circuit", team_form5: "Team form (last 5)",
+        pts_before: "Championship points", standing_before: "Championship position",
+        qgap_pct: "Qualifying gap to pole", qgap_vs_team: "Quali gap vs teammate",
+        grid_vs_team: "Grid vs teammate", drv_qgap5: "Driver quali form",
+        drv_vs_team5: "Driver vs teammate", team_qgap5: "Team quali pace", team_pts5: "Team points (last 5)"
       };
 
-      function labelFor(k){
-        return { recentForm:"Recent form (last 5)", standings:"Championship standing",
-                 team:"Constructor standing", track:"History here" }[k] || k;
-      }
-
-      document.getElementById("weightsDisplay").innerHTML = Object.entries(WEIGHTS)
-        .map(([k,v]) => `<span class="tech-tag">${labelFor(k)} — ${Math.round(v*100)}%</span>`)
-        .join("");
-
-      function cacheGet(key){
-        try{
-          const raw = localStorage.getItem(key);
-          if(!raw) return null;
-          const parsed = JSON.parse(raw);
-          if(Date.now() - parsed.t > CACHE_TTL_MS) return null;
-          return parsed.v;
-        }catch(e){ return null; }
-      }
-      function cacheSet(key, v){
-        try{ localStorage.setItem(key, JSON.stringify({t:Date.now(), v})); }catch(e){}
-      }
-
-      async function getJSON(url){
-        const cached = cacheGet(url);
-        if(cached) return cached;
-        const res = await fetch(url);
-        if(!res.ok) throw new Error("Request failed: " + url);
-        const data = await res.json();
-        cacheSet(url, data);
-        return data;
-      }
-
-      function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-      async function findSeasonRaces(){
-        const now = new Date();
-        for(const year of [now.getFullYear(), now.getFullYear()-1]){
-          const data = await getJSON(`${API}/${year}/races.json?limit=100`);
-          const races = data?.MRData?.RaceTable?.Races || [];
-          if(races.length) return { year, races };
+      // ---- CSV loading (small quote-aware parser, no dependencies) ----
+      function parseCSV(text){
+        const rows = []; let row = [], f = "", q = false;
+        for(let i = 0; i < text.length; i++){
+          const c = text[i];
+          if(q){
+            if(c === '"'){ if(text[i+1] === '"'){ f += '"'; i++; } else q = false; }
+            else f += c;
+          } else if(c === '"') q = true;
+          else if(c === ","){ row.push(f); f = ""; }
+          else if(c === "\n"){ row.push(f); rows.push(row); row = []; f = ""; }
+          else if(c !== "\r") f += c;
         }
-        throw new Error("No race schedule found");
+        if(f || row.length){ row.push(f); rows.push(row); }
+        const clean = rows.filter(r => r.length > 1 || r[0] !== "");
+        if(!clean.length) return [];
+        const [head, ...body] = clean;
+        return body.map(r => Object.fromEntries(head.map((h, i) => [h, r[i]])));
+      }
+      async function load(name){
+        const res = await fetch(BASE + name, { cache: "no-cache" });
+        if(!res.ok) throw new Error(name + " not found");
+        return parseCSV(await res.text());
       }
 
-      function pickNextRace(races){
-        const today = new Date(); today.setHours(0,0,0,0);
-        const withDates = races.map(r => ({ r, d: new Date(r.date + "T" + (r.time || "00:00:00Z")) }));
-        const upcoming = withDates.filter(x => x.d >= today);
-        if(upcoming.length) return { race: upcoming[0].r, completed: withDates.filter(x => x.d < today).map(x => x.r) };
-        return { race: races[races.length-1], completed: races.slice(0, -1) };
+      function timeAgo(iso){
+        const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+        if(!(days >= 0)) return "";
+        if(days === 0) return "updated today";
+        if(days === 1) return "updated yesterday";
+        return `updated ${days} days ago`;
       }
 
-      function renderHero(race){
-        document.getElementById("raceName").textContent = race.raceName;
-        const circuit = race.Circuit;
-        const dateStr = new Date(race.date + "T12:00:00Z").toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
-        document.getElementById("raceMeta").textContent = `${circuit.circuitName}, ${circuit.Location.locality}, ${circuit.Location.country} · ${dateStr}`;
-        renderCountdown(race);
-      }
+      // ---- Next race ----
+      function renderHero(next){
+        if(!next.race_name){
+          $("raceName").textContent = "—";
+          $("raceMeta").textContent = "No upcoming race right now.";
+          return;
+        }
+        $("raceName").textContent = next.race_name;
+        const dateStr = new Date(next.race_date + "T12:00:00Z")
+          .toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+        $("raceMeta").textContent = `${next.circuit_name}, ${next.locality}, ${next.country} · ${dateStr}`;
 
-      function renderCountdown(race){
-        const target = new Date(race.date + "T" + (race.time || "12:00:00Z"));
-        const el = document.getElementById("countdown");
-        function tick(){
+        const target = new Date(next.race_date + "T" + (next.race_time_utc || "12:00:00Z"));
+        const el = $("countdown");
+        (function tick(){
           const diff = target - new Date();
           if(diff <= 0){ el.innerHTML = `<div class="unit"><span class="num">Race weekend is here</span></div>`; return; }
-          const d = Math.floor(diff / 86400000);
-          const h = Math.floor(diff % 86400000 / 3600000);
-          const m = Math.floor(diff % 3600000 / 60000);
+          const d = Math.floor(diff / 86400000), h = Math.floor(diff % 86400000 / 3600000), m = Math.floor(diff % 3600000 / 60000);
           el.innerHTML = `
             <div class="unit"><span class="num">${d}</span><span class="label">days</span></div>
             <div class="unit"><span class="num">${h}</span><span class="label">hours</span></div>
             <div class="unit"><span class="num">${m}</span><span class="label">min</span></div>`;
           setTimeout(tick, 60000);
-        }
-        tick();
+        })();
       }
 
-      async function getRecentFormAvg(year, completedRaces){
-        const last5 = completedRaces.slice(-5);
-        const avg = {};
-        for(const race of last5){
-          const data = await getJSON(`${API}/${year}/${race.round}/results.json`);
-          const results = data?.MRData?.RaceTable?.Races?.[0]?.Results || [];
-          results.forEach(res => {
-            const id = res.Driver.driverId;
-            const finish = Number(res.position) || 20;
-            if(!avg[id]) avg[id] = { sum:0, n:0 };
-            avg[id].sum += finish; avg[id].n += 1;
-          });
-          await sleep(260);
-        }
-        const out = {};
-        Object.keys(avg).forEach(id => out[id] = avg[id].sum / avg[id].n);
-        return out;
+      function renderBoard(preds){
+        const byModel = m => preds.filter(p => p.model === m).sort((a, b) => a.predicted_position - b.predicted_position);
+        const rows = byModel("xgboost");
+        if(!rows.length){ $("status").textContent = "No prediction rows found."; return; }
+        const scores = rows.map(r => +r.predicted_score);
+        const min = Math.min(...scores), range = Math.max(Math.max(...scores) - min, 0.0001);
+
+        const board = rows.map((r, i) => `
+          <div class="project-item driver-row">
+            <span class="pos">P${i + 1}</span>
+            <div class="info">
+              <div class="name">${esc(r.driver_name)}</div>
+              <div class="team">${esc(pretty(r.constructor_id))}</div>
+            </div>
+            <span class="points">grid P${esc(r.grid)}</span>
+            <div class="meter"><div class="meter-fill" style="width:${100 - Math.round(((+r.predicted_score - min) / range) * 90)}%"></div></div>
+          </div>`).join("");
+
+        const pick = m => byModel(m)[0]?.driver_name;
+        const note = `<p class="baseline-note">Winner pick: ${esc(pick("xgboost"))} (model) &middot;
+          ${esc(pick("grid"))} (if grid order held) &middot; ${esc(pick("standings"))} (if championship order held)</p>`;
+        $("boardWrap").innerHTML = board + note;
       }
 
-      async function getTrackHistoryAvg(circuitId, year){
-        const avg = {};
-        let found = 0;
-        for(const y of [year-1, year-2, year-3]){
-          try{
-            const data = await getJSON(`${API}/${y}/circuits/${circuitId}/results.json?limit=40`);
-            const results = data?.MRData?.RaceTable?.Races?.[0]?.Results || [];
-            if(results.length) found++;
-            results.forEach(res => {
-              const id = res.Driver.driverId;
-              const finish = Number(res.position) || 20;
-              if(!avg[id]) avg[id] = { sum:0, n:0 };
-              avg[id].sum += finish; avg[id].n += 1;
-            });
-          }catch(e){}
-          await sleep(260);
-        }
-        const out = {};
-        Object.keys(avg).forEach(id => out[id] = avg[id].sum / avg[id].n);
-        return { avg: out, hasHistory: found > 0 };
+      // ---- Accuracy ----
+      function renderImportance(imp){
+        $("weightsDisplay").innerHTML = imp.filter(r => r.model === "xgboost").slice(0, 6)
+          .map(r => `<span class="tech-tag">${esc(FEATURE_LABELS[r.feature] || pretty(r.feature))} — ${Math.round(r.importance * 100)}%</span>`)
+          .join("");
       }
 
-      function rankToUnit(values, ids, fallback){
-        const present = ids.filter(id => values[id] !== undefined);
-        const sorted = present.slice().sort((a,b) => values[a] - values[b]);
-        const unit = {};
-        ids.forEach(id => {
-          if(values[id] === undefined){ unit[id] = fallback; return; }
-          const rank = sorted.indexOf(id);
-          unit[id] = present.length > 1 ? rank / (present.length - 1) : 0.5;
-        });
-        return unit;
-      }
+      function renderAccuracy(summary, vs, races){
+        const all = summary.filter(r => r.scope === "all");
+        const x = all.find(r => r.model === "xgboost");
+        if(!x){ $("accuracyWrap").innerHTML = `<p class="status-line">No completed races to score yet.</p>`; return; }
+        $("accuracyMeta").textContent = "— " + timeAgo(x.generated_at);
 
-      function renderBoard(rows){
-        const wrap = document.getElementById("boardWrap");
-        const maxScore = Math.max(...rows.map(r => r.score), 0.0001);
-        const minScore = Math.min(...rows.map(r => r.score));
-        const range = Math.max(maxScore - minScore, 0.0001);
-        wrap.innerHTML = rows.map((r, i) => {
-          const fill = 100 - Math.round(((r.score - minScore) / range) * 90);
-          return `
-            <div class="project-item driver-row">
-              <span class="pos">P${i+1}</span>
-              <div class="info">
-                <div class="name">${r.name}</div>
-                <div class="team">${r.team}</div>
-              </div>
-              <span class="points">${r.points} pts</span>
-              <div class="meter"><div class="meter-fill" style="width:${fill}%"></div></div>
-            </div>`;
-        }).join("");
-      }
+        const seasons = [...new Set(races.map(r => +r.season))];
+        const range = seasons.length > 1 ? `${Math.min(...seasons)}–${Math.max(...seasons)}` : `${seasons[0] ?? ""}`;
+        const line = (label, r) => r ? `<p class="baseline-note">vs. ${label}: ${fmt(r.winner_hit_rate, "%")} winner hit rate,
+          ${fmt(r.podium_hit_rate, "%")} podium, ${fmt(r.mae_positions)} avg. position error.</p>` : "";
+        const verdict = (b, label) => {
+          const r = vs.find(v => v.model === "xgboost" && v.baseline === b && v.metric === "spearman");
+          if(!r) return "";
+          const d = +r.diff, lo = +r.ci_low, hi = +r.ci_high;
+          const w = lo > 0 ? "better than" : hi < 0 ? "worse than" : "not clearly different from";
+          return `<p class="baseline-note">Ranking the whole field: ${w} ${label} (${d >= 0 ? "+" : ""}${d.toFixed(3)} rank correlation, 95% CI ${lo.toFixed(3)} to ${hi.toFixed(3)}).</p>`;
+        };
 
-      function setStatus(text, isErr){
-        const el = document.getElementById("status");
-        if(el){ el.textContent = text; el.className = "status-line" + (isErr ? " err" : ""); }
+        const stats = `
+          <div class="stat-grid">
+            <div class="stat-card"><span class="num">${fmt(x.winner_hit_rate, "%")}</span><span class="label">winner hit rate</span></div>
+            <div class="stat-card"><span class="num">${fmt(x.podium_hit_rate, "%")}</span><span class="label">podium (any order)</span></div>
+            <div class="stat-card"><span class="num">${fmt(x.mae_positions)}</span><span class="label">avg. position error</span></div>
+            <div class="stat-card"><span class="num">${fmt(x.races)}</span><span class="label">races scored</span></div>
+          </div>
+          <p class="baseline-note">Backtest ${range}: each race predicted using only earlier races.</p>
+          ${line("guessing the starting grid order", all.find(r => r.model === "grid"))}
+          ${line("guessing the pre-race championship order", all.find(r => r.model === "standings"))}
+          ${verdict("grid", "the starting grid")}
+          ${verdict("standings", "the championship order")}`;
+
+        const cur = Math.max(...seasons);
+        const rows = races.filter(r => r.model === "xgboost" && +r.season === cur)
+          .sort((a, b) => b.round - a.round)
+          .map(r => `
+            <div class="race-history-row">
+              <span class="hit-dot ${r.winner_hit === "1" ? "yes" : "no"}" title="${r.winner_hit === "1" ? "Predicted winner correctly" : "Missed the winner"}"></span>
+              <span class="rname">${esc(r.race_name)}</span>
+              <span class="matchup">picked ${esc(r.predicted_winner.split(" ").pop())} &middot; won by ${esc(r.actual_winner.split(" ").pop())}</span>
+            </div>`).join("");
+        const history = rows ? `<p class="baseline-note">${cur} season, race by race:</p><div class="race-history">${rows}</div>` : "";
+        $("accuracyWrap").innerHTML = stats + history;
       }
 
       async function main(){
         try{
-          const { year, races } = await findSeasonRaces();
-          const { race, completed } = pickNextRace(races);
-          renderHero(race);
-
-          setStatus("Reading championship standings…");
-          const [driverStandingsData, constructorStandingsData] = await Promise.all([
-            getJSON(`${API}/${year}/driverStandings.json`),
-            getJSON(`${API}/${year}/constructorStandings.json`)
-          ]);
-          const driverStandings = driverStandingsData?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings || [];
-          const constructorStandings = constructorStandingsData?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings || [];
-
-          if(!driverStandings.length){
-            setStatus("No standings published yet for " + year + " — check back once the season is under way.", true);
-            return;
-          }
-          const standingsByDriver = {};
-          driverStandings.forEach(d => {
-            standingsByDriver[d.Driver.driverId] = {
-              points: d.points,
-              standingRank: Number(d.position),
-              constructorId: d.Constructors?.[0]?.constructorId
-            };
-          });
-          const constructorRank = {};
-          constructorStandings.forEach(c => { constructorRank[c.Constructor.constructorId] = Number(c.position); });
-
-          let driverIds, driverMeta = {};
-          if(completed.length){
-            const lastRound = completed[completed.length - 1].round;
-            const lastRoundData = await getJSON(`${API}/${year}/${lastRound}/results.json`);
-            const lastResults = lastRoundData?.MRData?.RaceTable?.Races?.[0]?.Results || [];
-            driverIds = lastResults.map(r => r.Driver.driverId);
-            lastResults.forEach(r => {
-              driverMeta[r.Driver.driverId] = { name: `${r.Driver.givenName} ${r.Driver.familyName}`, team: r.Constructor.name };
-            });
-          } else {
-            driverIds = driverStandings.map(d => d.Driver.driverId);
-            driverStandings.forEach(d => {
-              driverMeta[d.Driver.driverId] = { name: `${d.Driver.givenName} ${d.Driver.familyName}`, team: d.Constructors?.[0]?.name || "—" };
-            });
-          }
-
-          setStatus("Averaging the last few races…");
-          const recentForm = completed.length ? await getRecentFormAvg(year, completed) : {};
-
-          setStatus("Checking history at " + race.Circuit.circuitName + "…");
-          const { avg: trackHistory, hasHistory } = await getTrackHistoryAvg(race.Circuit.circuitId, year);
-
-          const standingsValues = {}; driverIds.forEach(id => standingsValues[id] = standingsByDriver[id]?.standingRank);
-          const teamValues = {}; driverIds.forEach(id => {
-            const cid = standingsByDriver[id]?.constructorId;
-            teamValues[id] = cid ? constructorRank[cid] : undefined;
-          });
-
-          const uStandings = rankToUnit(standingsValues, driverIds, 0.5);
-          const uTeam = rankToUnit(teamValues, driverIds, 0.5);
-          const uForm = rankToUnit(recentForm, driverIds, 0.5);
-          const uTrack = hasHistory ? rankToUnit(trackHistory, driverIds, 0.5) : null;
-
-          const w = { ...WEIGHTS };
-          if(!uTrack){ const extra = w.track / 3; w.recentForm += extra; w.standings += extra; w.team += extra; w.track = 0; }
-
-          const rows = driverIds.map(id => {
-            const score = uForm[id]*w.recentForm + uStandings[id]*w.standings + uTeam[id]*w.team + (uTrack ? uTrack[id]*w.track : 0);
-            return { id, name: driverMeta[id].name, team: driverMeta[id].team, points: standingsByDriver[id]?.points ?? 0, score };
-          }).sort((a,b) => a.score - b.score || b.points - a.points);
-
-          renderBoard(rows);
-          setStatus("");
-          document.getElementById("status")?.remove();
+          const next = (await load("next_race.csv"))[0];
+          if(!next) throw new Error("next_race.csv is empty");
+          renderHero(next);
+          if(next.status === "predicted") renderBoard(await load("predictions.csv"));
+          else $("status").textContent = next.status === "awaiting_qualifying"
+            ? "Waiting for qualifying — the prediction appears once the grid is set."
+            : "No upcoming race right now.";
         }catch(err){
           console.error(err);
-          setStatus("Couldn't load race data right now (" + err.message + "). Try refreshing in a bit.", true);
+          $("raceMeta").textContent = "Couldn't load race data right now.";
+          $("status").textContent = "Couldn't load the prediction (" + err.message + "). Try refreshing in a bit.";
+          $("status").className = "status-line err";
         }
-      }
-
-      function timeAgo(isoString){
-        const diffMs = Date.now() - new Date(isoString).getTime();
-        const days = Math.floor(diffMs / 86400000);
-        if(days <= 0) return "updated today";
-        if(days === 1) return "updated yesterday";
-        return `updated ${days} days ago`;
-      }
-
-      function renderAccuracy(data){
-        document.getElementById("accuracyMeta").textContent = `— ${timeAgo(data.generated_at)}`;
-
-        if(!data.races_evaluated){
-          document.getElementById("accuracyWrap").innerHTML =
-            `<p class="status-line">No completed races to score yet this season.</p>`;
-          return;
-        }
-
-        const m = data.model, b = data.baseline_standings_only;
-        const stats = `
-          <div class="stat-grid">
-            <div class="stat-card"><span class="num">${m.winner_hit_rate ?? "—"}%</span><span class="label">winner hit rate</span></div>
-            <div class="stat-card"><span class="num">${m.podium_precision ?? "—"}%</span><span class="label">podium precision</span></div>
-            <div class="stat-card"><span class="num">${m.avg_rank_error ?? "—"}</span><span class="label">avg. position error</span></div>
-            <div class="stat-card"><span class="num">${data.races_evaluated}</span><span class="label">races scored</span></div>
-          </div>
-          <p class="baseline-note">
-            vs. just guessing the pre-race championship order: ${b.winner_hit_rate ?? "—"}% winner hit rate,
-            ${b.podium_precision ?? "—"}% podium precision, ${b.avg_rank_error ?? "—"} avg. position error.
-          </p>`;
-
-        const rows = data.races.slice().reverse().map(r => `
-          <div class="race-history-row">
-            <span class="hit-dot ${r.winner_hit ? "yes" : "no"}" title="${r.winner_hit ? "Predicted winner correctly" : "Missed the winner"}"></span>
-            <span class="rname">${r.race_name}</span>
-            <span class="matchup">picked ${r.predicted_winner.split(" ").pop()} &middot; won by ${r.actual_winner.split(" ").pop()}</span>
-          </div>`).join("");
-
-        document.getElementById("accuracyWrap").innerHTML = stats + `<div class="race-history">${rows}</div>`;
       }
 
       async function loadAccuracy(){
         try{
-          const res = await fetch("data/f1-accuracy.json", { cache: "no-cache" });
-          if(!res.ok) throw new Error("not found");
-          const data = await res.json();
-          renderAccuracy(data);
+          const [summary, vs, races, imp] = await Promise.all(
+            ["backtest_summary.csv", "backtest_vs_baselines.csv", "backtest_races.csv", "feature_importance.csv"].map(load));
+          renderImportance(imp);
+          renderAccuracy(summary, vs, races);
         }catch(e){
-          document.getElementById("accuracyWrap").innerHTML =
-            `<p class="status-line">Backtest data isn't published yet &mdash; it runs weekly via GitHub Actions, or trigger it manually from the Actions tab.</p>`;
+          console.error(e);
+          $("accuracyWrap").innerHTML = `<p class="status-line">Backtest data isn't published yet &mdash; run the "Update predictions" workflow in the model repo.</p>`;
         }
       }
 
