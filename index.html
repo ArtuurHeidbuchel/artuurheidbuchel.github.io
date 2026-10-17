@@ -3,153 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ecebe6">
     <title>Artuur Heidbüchel</title>
+    <meta name="description" content="Artuur Heidbüchel — computer science student. Links to the platforms where I share my work.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="bg-shape bg-shape-1"></div>
-    <div class="bg-shape bg-shape-2"></div>
-    <div class="bg-shape bg-shape-3"></div>
-    <div class="bg-shape bg-shape-4"></div>
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <a class="brand" href="#top">Artuur Heidbüchel</a>
+        <nav class="topnav mono" aria-label="Channels">
+            <a class="ul" href="https://github.com/ArtuurHeidbuchel">Github</a>
+            <a class="ul" href="https://app.thestorygraph.com/profile/artuur_heidbuchel">Storygraph</a>
+            <a class="ul" href="https://www.last.fm/user/Artuur_-">last.fm</a>
+            <a class="ul" href="https://letterboxd.com/Artuur_H/">Letterboxd</a>
+            <a class="ul" href="mailto:artuur.heidbuchel@protonmail.com">Email</a>
+        </nav>
+        <span class="mono muted">en / nl</span>
+    </header>
 
-    <main class="container">
-        
-        <!-- LEFT SIDE -->
-        <div class="sidebar">
-            <header>
-                <h1>Artuur Heidbüchel</h1>
-                <p class="sub-header">Computer Science Student</p>
-                <p class="sub-header">en / nl </p>
-                <p class="bio">I prefer direct communication over social media. This landing page connects you to the platforms where I actually spend my time and share my work.</p>
-                <button id="theme-toggle" class="btn-small">toggle dark mode</button>
-            </header>
+    <main id="top">
 
-            <section>
-                <p class="section-label">about</p>
-                <p class="bio">
-                    I spend most of my free time watching films, listening to music, following F1 and sometimes reading a book. 
-                    I'm interested in secure software development and privacy focused open-source software. I like making small projects when I can actually
-                    come up with any good ideas. 
-                </p>
-            </section>
+        <!-- HERO: fits one screen on widescreen displays -->
+        <section class="hero">
+            <div class="heroTop">
 
-            <nav class="links">
-                <a href="https://github.com/ArtuurHeidbuchel" class="link">Github</a>
-                <a href="https://app.thestorygraph.com/profile/artuur_heidbuchel" class="link">Storygraph</a>
-                <a href="https://www.last.fm/user/Artuur_-" class="link">last.fm</a>
-                <a href="https://letterboxd.com/Artuur_H/" class="link">Letterboxd</a>
-                <a href="mailto:artuur.heidbuchel@protonmail.com" class="link">email</a>
-            </nav>
-        </div>
-
-        <!-- RIGHT SIDE (Scrolls on Desktop) -->
-        <div class="main-content">
-            <section class="first-section-desktop">
-                <p class="section-label">now</p>
-                <div class="grid">
-                    <!-- Storygraph -->
-                    <a href="https://app.thestorygraph.com/profile/artuur_heidbuchel" target="_blank" rel="noopener noreferrer" class="card media-card">
-                        <div class="media-info">
-                            <span class="category-tag">reading //</span>
-                            <span id="storygraph-title" class="is-loading">Loading...</span>
+                <div class="tcol">
+                    <p class="role mono rise"><span class="role-dot"></span>Computer Science Student</p>
+                    <h1 class="name rise" style="animation-delay: .1s">
+                        <span>Artuur</span>
+                        <span>Heidbüchel</span>
+                    </h1>
+                    <div class="intro rise" style="animation-delay: .25s">
+                        <p>I prefer direct communication over social media. This landing page connects you to the platforms where I actually spend my time and share my work.</p>
+                        <div class="buttons">
+                            <a class="btn btn-solid" href="https://github.com/ArtuurHeidbuchel">Github ↗</a>
+                            <a class="btn btn-ghost" href="mailto:artuur.heidbuchel@protonmail.com">Email me</a>
                         </div>
-                        <img id="storygraph-img" class="media-img" src="" alt="Book Cover">
-                    </a>
-
-                    <!-- Letterboxd -->
-                    <a href="https://letterboxd.com/Artuur_H/" target="_blank" rel="noopener noreferrer" class="card media-card">
-                        <div class="media-info">
-                            <span class="category-tag">Last watch //</span>
-                            <span id="letterboxd-title" class="is-loading">Loading...</span>
-                        </div>
-                        <img id="letterboxd-img" class="media-img" src="" alt="Movie Poster">
-                    </a>
-
-                    <!-- Last.fm -->
-                    <a href="https://www.last.fm/user/Artuur_-" target="_blank" rel="noopener noreferrer" class="card media-card">
-                        <div class="media-info">
-                            <span class="category-tag">on repeat //</span>
-                            <span id="lastfm-artist" class="is-loading">Loading...</span>
-                        </div>
-                        <img id="lastfm-img" class="media-img" src="" alt="Album Art">
-                    </a>
+                    </div>
                 </div>
-            </section>
+                <div class="region">
 
-            <section>
-                <p class="section-label">projects</p>
-                        <div class="project-item">
-                            <a class="project-title" href="https://github.com/ArtuurHeidbuchel/Computer-Graphics-Project-2026">2026 Computer Graphics project</a>
-                            <p class="project-desc">A team project made in c++ using OpenGL. The task was to make a model follow a beziercurve in a 3D
-                                environment. We implemented lighting, post processing, convolution, chroma keying and more.
-                            </p>
-                            <div class="tech-tags">
-                                <span class="tech-tag">c++</span>
-                                <span class="tech-tag">OpenGL</span>
+                    <a class="frame fl tone-warm" href="https://www.last.fm/user/Artuur_-" target="_blank" rel="noopener noreferrer"
+                       aria-label="On repeat, on last.fm"
+                       style="--x:0; --y:1; --w:4.2; --h:4.2; --z:1; --dur:10s; --delay:0s">
+                        <img id="lastfm-img" class="media-img" src="" alt="Album art">
+                        <span class="chip">On repeat</span>
+                    </a>
+
+                    <a class="frame fl tone-cool" href="https://letterboxd.com/Artuur_H/" target="_blank" rel="noopener noreferrer"
+                       aria-label="Last watch, on Letterboxd"
+                       style="--x:3.4; --y:2.6; --w:2.6; --h:3.9; --z:2; --dur:12s; --delay:-3s">
+                        <img id="letterboxd-img" class="media-img" src="" alt="Movie poster">
+                        <span class="chip">Last watch</span>
+                    </a>
+
+                    <a class="frame fl tone-sand" href="https://app.thestorygraph.com/profile/artuur_heidbuchel" target="_blank" rel="noopener noreferrer"
+                       aria-label="Reading, on Storygraph"
+                       style="--x:0.8; --y:5.7; --w:2.2; --h:3.3; --z:3; --dur:11s; --delay:-6s">
+                        <img id="storygraph-img" class="media-img" src="" alt="Book cover">
+                        <span class="chip">Reading</span>
+                    </a>
+
+                    <figure class="frame fl tone-grey" style="--x:6.4; --y:0.8; --w:3.9; --h:2.6; --z:1; --dur:13s; --delay:-2s">
+                        <img src="images/GameBoyBrussel.png" alt="" onerror="this.remove()">
+                    </figure>
+
+                    <figure class="frame fl tone-straw" style="--x:6.9; --y:4; --w:2.3; --h:3.45; --z:2; --dur:10.5s; --delay:-5s">
+                        <img src="images/MaltaChurch.jpg" alt="" onerror="this.remove()">
+                    </figure>
+
+                    <figure class="frame fl tone-warm" style="--x:4; --y:7; --w:2.6; --h:1.95; --z:1; --dur:12.5s; --delay:-8s">
+                        <img src="images/Sea.JPG" alt="" onerror="this.remove()">
+                    </figure>
+
+                    <figure class="frame fl tone-cool" style="--x:9.7; --y:3.9; --w:2.9; --h:4.35; --z:2; --dur:11.5s; --delay:-4s">
+                        <img src="images/FloodFlower.JPG" alt="" onerror="this.remove()">
+                    </figure>
+
+                    <figure class="frame fl tone-sand" style="--x:12.9; --y:1.2; --w:3.2; --h:2.1; --z:1; --dur:14s; --delay:-7s">
+                        <img src="images/FranceCat.jpg" alt="" onerror="this.remove()">
+                    </figure>
+                </div>
+            </div>
+            <div class="caps wrap">
+                <a class="cap" href="https://app.thestorygraph.com/profile/artuur_heidbuchel" target="_blank" rel="noopener noreferrer">
+                    <span class="mono muted">01 / Reading</span>
+                    <span id="storygraph-title" class="cap-title t is-loading">Loading...</span>
+                </a>
+                <a class="cap" href="https://letterboxd.com/Artuur_H/" target="_blank" rel="noopener noreferrer">
+                    <span class="mono muted">02 / Last watch</span>
+                    <span id="letterboxd-title" class="cap-title t is-loading">Loading...</span>
+                </a>
+                <a class="cap" href="https://www.last.fm/user/Artuur_-" target="_blank" rel="noopener noreferrer">
+                    <span class="mono muted">03 / On repeat</span>
+                    <span id="lastfm-artist" class="cap-title t is-loading">Loading...</span>
+                </a>
+            </div>
+        </section>
+
+                <!-- PROJECTS -->
+        <section class="sec" id="projects">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(02)</span>
+                        <h2>Projects</h2>
+                    </div>
+                    <div class="sec-body cards">
+
+                        <a class="card" href="https://github.com/ArtuurHeidbuchel/Computer-Graphics-Project-2026">
+                            <div class="card-media">
+                                <video class="shot" src="images/FirstPerson.mp4"
+                                    autoplay muted loop playsinline preload="metadata"
+                                    aria-label="Screen recording of the 2026 computer graphics project"
+                                    onerror="this.remove()"></video>
+                                <span class="chip">Project 01</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="mono muted">c++ / OpenGL</p>
+                                <div class="card-title"><h3 class="t">2026 Computer Graphics project</h3><span class="ar">↗</span></div>
+                                <p class="desc">A team project made in c++ using OpenGL for my 2026 Computer Graphics course. The task was to make a model follow a Bézier curve in a 3D environment. We implemented lighting, post processing, convolution, chroma keying and more.</p>
+                            </div>
+                        </a>
+
+                        <a class="card" href="F1-prediction.html">
+                            <div class="card-media">
+                                <img class="shot" src="images/prediction.png" alt="Screenshot of the F1 prediction model" onerror="this.remove()">
+                                <span class="chip">Project 02</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="mono muted">Python</p>
+                                <div class="card-title"><h3 class="t">F1 prediction model</h3><span class="ar">↗</span></div>
+                                <p class="desc">Though very inaccurate at the moment, this is my attempt at creating a simple F1 race prediction heuristic in python. I'm always looking to find ways on improving it.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHOTOGRAPHY: auto-scrolling strip -->
+        <section class="sec" id="photography">
+            <div class="wrap">
+                <div class="sec-head">
+                    <div>
+                        <span class="idx mono muted">(03)</span>
+                        <h2>Photography</h2>
+                    </div>
+                    <span class="mono muted">Own photographs</span>
+                </div>
+            </div>
+            <div class="strip" data-strip aria-label="Photographs">
+                <div class="strip-track">
+                    <figure class="strip-item tone-grey" style="--ar:1.33">
+                        <img src="images/ScaryBird.JPG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">01</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-warm" style="--ar:1.33">
+                        <img src="images/Flower.jpg" alt="" onerror="this.remove()">
+                        <figcaption class="chip">02</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-cool" style="--ar:1.33">
+                        <img src="images/Bench.PNG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">03</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-straw" style="--ar:1.33">
+                        <img src="images/AlsoABird.JPG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">04</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-sand" style="--ar:1.33">
+                        <img src="images/DogSea.JPG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">05</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-sage" style="--ar:1.33">
+                        <img src="images/Sea.JPG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">06</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-grey" style="--ar:1.33">
+                        <img src="images/Bird.JPG" alt="" onerror="this.remove()">
+                        <figcaption class="chip">07</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-grey" style="--ar:1.33">
+                        <img src="images/Poppy.jpg" alt="" onerror="this.remove()">
+                        <figcaption class="chip">07</figcaption>
+                    </figure>
+                    <figure class="strip-item tone-grey" style="--ar:1.33">
+                        <img src="images/Diepenbeek.jpg" alt="" onerror="this.remove()">
+                        <figcaption class="chip">07</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="sec" id="about">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(04)</span>
+                        <h2>About</h2>
+                    </div>
+                    <div class="sec-body about">
+                        <div class="about-text">
+                            <p class="lead">I'm interested in secure software development and privacy focused open-source software. I like making small projects when I can actually come up with any good ideas.</p>
+                            <p class="muted">I spend most of my free time watching films, listening to music, following F1 and sometimes reading a book. Ask me about my favourites!</p>
+                        </div>
+                        <div class="about-frames">
+                            <div class="about-row">
+                                <figure class="frame tone-cool" style="--grow:1.4">
+                                    <img src="images/InTheMoodForLove.jpg" alt="" onerror="this.remove()">
+                                    <figcaption class="chip">Films</figcaption>
+                                </figure>
+                                <figure class="frame tone-warm" style="--grow:1">
+                                    <img src="images/Sanmon_Gossip.jpg" alt="" onerror="this.remove()">
+                                    <figcaption class="chip">Music</figcaption>
+                                </figure>
+                            </div>
+                            <div class="about-row">
+                                <figure class="frame tone-straw" style="--grow:1">
+                                    <img src="images/Merc_F1.jpg" alt="" onerror="this.remove()">
+                                    <figcaption class="chip">F1</figcaption>
+                                </figure>
+                                <figure class="frame tone-sand" style="--grow:1.4">
+                                    <img src="images/MobyDick.jpg" alt="" onerror="this.remove()">
+                                    <figcaption class="chip">Books</figcaption>
+                                </figure>
                             </div>
                         </div>
-                        <div class="project-item">
-                            <a class="project-title" href="F1-prediction.html">F1 prediction model</a>
-                            <p class="project-desc">Though very inaccurate at the moment, this is my attempt at creating a 
-                                simple F1 race prediction heuristic in python. I want to update it with a genuine machine learning model eventually.</p>
-                            <div class="tech-tags">
-                                <span class="tech-tag">Python</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LANGUAGES & TOOLS -->
+        <section class="sec sec-tight" id="tools">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(05)</span>
+                        <h2>Languages &amp; tools</h2>
+                    </div>
+                    <div class="sec-body tools">
+                        <div class="tool tone-sand"><span class="mono-s muted">01</span><div><strong>Haskell</strong><span class="mono-s muted">functional</span></div></div>
+                        <div class="tool tone-cool"><span class="mono-s muted">02</span><div><strong>Python</strong><span class="mono-s muted">scripting</span></div></div>
+                        <div class="tool tone-warm"><span class="mono-s muted">03</span><div><strong>C++</strong><span class="mono-s muted">systems · graphics</span></div></div>
+                        <div class="tool tone-straw"><span class="mono-s muted">04</span><div><strong>Rust</strong><span class="mono-s muted">systems</span></div></div>
+                        <div class="tool tone-grey"><span class="mono-s muted">05</span><div><strong>Java</strong><span class="mono-s muted">object-oriented</span></div></div>
+                        <div class="tool tone-sage"><span class="mono-s muted">06</span><div><strong>JavaScript</strong><span class="mono-s muted">web</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="sec sec-tight" id="contact">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(06)</span>
+                        <h2>Contact</h2>
+                    </div>
+                    <div class="sec-body contact">
+                        <div class="contact-mail">
+                            <span class="mono muted">Direct communication</span>
+                            <a class="mail" href="mailto:artuur.heidbuchel@protonmail.com">artuur.heidbuchel@protonmail.com ↗</a>
+                        </div>
+                        <div class="contact-support">
+                            <span class="mono muted">Software and services I support</span>
+                            <div class="support-links">
+                                <a class="ul" href="https://www.mozilla.org/firefox" target="_blank" rel="noopener noreferrer">Firefox</a>
+                                <a class="ul" href="https://ublockorigin.com/" target="_blank" rel="noopener noreferrer">uBlock Origin</a>
+                                <a class="ul" href="https://fedoraproject.org/" target="_blank" rel="noopener noreferrer">Fedora</a>
+                                <a class="ul" href="https://archive.org/" target="_blank" rel="noopener noreferrer">Internet Archive</a>
+                                <a class="ul" href="https://www.videolan.org/" target="_blank" rel="noopener noreferrer">VLC</a>
+                                <a class="ul" href="https://www.reddit.com/r/AskHistorians/" target="_blank" rel="noopener noreferrer">AskHistorians</a>
+                                <a class="ul" href="https://www.qbittorrent.org/" target="_blank" rel="noopener noreferrer">qBittorrent</a>
+                                <a class="ul" href="https://apps.ankiweb.net/" target="_blank" rel="noopener noreferrer">Anki</a>
                             </div>
                         </div>
-            </section>
-
-            <section>
-                <p class="section-label">languages & tools</p>
-                <div class="grid">
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/haskell/2B1D0E" width="24" height="24" alt="">
-                        haskell
-                    </div>
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/python/2B1D0E" width="24" height="24" alt="">
-                        python
-                    </div>
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/cplusplus/2B1D0E" width="24" height="24" alt="">
-                        c++
-                    </div>
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/rust/2B1D0E" width="24" height="24" alt="">
-                        rust
-                    </div>
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/openjdk/2B1D0E" width="24" height="24" alt="">
-                        java
-                    </div>
-                    <div class="card">
-                        <img src="https://cdn.simpleicons.org/javascript/2B1D0E" width="24" height="24" alt="">
-                        javascript
                     </div>
                 </div>
-            </section>
-
-            <footer>
-                <p class="footer-label">software/services I support</p>
-                <div class="utility-links">
-                    <a class="btn-small" href="https://www.mozilla.org/firefox" target="_blank" rel="noopener noreferrer">Firefox</a>
-                    <a class="btn-small" href="https://ublockorigin.com/" target="_blank" rel="noopener noreferrer">uBlock Origin</a>
-                    <a class="btn-small" href="https://fedoraproject.org/" target="_blank" rel="noopener noreferrer">Fedora</a>
-                    <a class="btn-small" href="https://archive.org/" target="_blank" rel="noopener noreferrer">Internet Archive</a>
-                    <a class="btn-small" href="https://www.videolan.org/" target="_blank" rel="noopener noreferrer">VLC</a>
-                    <a class="btn-small" href="https://www.reddit.com/r/AskHistorians/" target="_blank" rel="noopener noreferrer">AskHistorians</a>
-                    <a class="btn-small" href="https://www.qbittorrent.org/" target="_blank" rel="noopener noreferrer">qBittorrent</a>
-                    <a class="btn-small" href="https://apps.ankiweb.net/" target="_blank" rel="noopener noreferrer">Anki</a>
-                </div>
-            </footer>
-        </div>
+            </div>
+        </section>
 
     </main>
 
+    <!-- faint cropped signature -->
+    <div class="signature" aria-hidden="true"><span>Artuur Heidbüchel</span></div>
+
+    <!-- film grain -->
+    <svg class="grain" aria-hidden="true" width="100%" height="100%">
+        <filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+        <rect width="100%" height="100%" filter="url(#nz)"/>
+    </svg>
+
+    <!-- your existing script (fills the "now" frames and captions) -->
     <script src="script.js"></script>
+    <!-- scrolling photo strip -->
+    <script src="strip.js" defer></script>
 </body>
 </html>

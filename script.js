@@ -112,82 +112,73 @@ fetch('./storygraph.json')
         document.getElementById('storygraph-img').classList.remove('is-loading');
     });
 
+/*
+ * Scrolling photography strip.
+ *
+ * Markup: <div class="strip" data-strip><div class="strip-track"> <figure class="strip-item">…</figure> … </div></div>
+ *
+ * The items are moved into a group; the group is repeated until it is at least as wide as the screen,
+ * then the whole group is duplicated once. CSS slides the track by exactly -50%, so the loop is seamless
+ * at any screen width. Speed stays constant (px per second) no matter how many photos there are.
+ */
+(function () {
+    'use strict';
 
-// --- THEME TOGGLE ---
-const themeToggle = document.getElementById('theme-toggle');
+    var SPEED = 45; // pixels per second; lower = slower
 
-const currentTheme = localStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.querySelectorAll('[data-strip]').forEach(function (strip) {
+        var track = strip.querySelector('.strip-track');
+        if (!track) return;
 
-if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
-    document.body.classList.add('dark-theme');
-    themeToggle.textContent = 'toggle light mode';
-}
+        var originals = Array.prototype.slice.call(track.children);
+        if (!originals.length) return;
 
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    
-    if (document.body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark');
-        themeToggle.textContent = 'toggle light mode';
-    } else {
-        localStorage.setItem('theme', 'light');
-        themeToggle.textContent = 'toggle dark mode';
-    }
-});
+        function build() {
+            var group = document.createElement('div');
+            group.className = 'strip-group';
+            originals.forEach(function (el) { group.appendChild(el); });
 
-// --- PARALLAX ---
-function initParallax() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
+            track.textContent = '';
+            track.appendChild(group);
 
-  const root = document.documentElement;
+            // width of one set of photos
+            var setWidth = group.getBoundingClientRect().width || 1;
+            var reps = Math.max(1, Math.ceil(window.innerWidth / setWidth));
 
-  // Scroll-based drift
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        root.style.setProperty('--scroll-y', window.scrollY);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+            // repeat the set until one group covers the screen (clones are hidden from assistive tech)
+            for (var r = 1; r < reps; r++) {
+                originals.forEach(function (el) {
+                    var c = el.cloneNode(true);
+                    c.setAttribute('aria-hidden', 'true');
+                    group.appendChild(c);
+                });
+            }
 
-  // Mouse-based drift
-  const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (!hasFinePointer) return;
+            // the second group is what the track slides into
+            var twin = group.cloneNode(true);
+            twin.setAttribute('aria-hidden', 'true');
+            track.appendChild(twin);
 
-  window.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 40;
-    const y = (e.clientY / window.innerHeight - 0.5) * 40;
-    root.style.setProperty('--mx', x.toFixed(2));
-    root.style.setProperty('--my', y.toFixed(2));
-  }, { passive: true });
-}
+            var groupWidth = group.getBoundingClientRect().width;
+            strip.style.setProperty('--speed', Math.round(groupWidth / SPEED) + 's');
+            return reps;
+        }
 
-document.addEventListener('DOMContentLoaded', initParallax);
+        var currentReps = build();
 
-function initScrollReveal() {
-  const selectors = '.card, .project-item, .link';
-  const items = document.querySelectorAll(selectors);
-
-  items.forEach((el, i) => {
-    el.setAttribute('data-reveal', '');
-    el.style.setProperty('--reveal-i', i % 8);
-  });
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
+        // rebuild only when the screen grows enough to need more repeats
+        var timer;
+        window.addEventListener('resize', function () {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                var group = track.querySelector('.strip-group');
+                if (!group) return;
+                var setWidth = group.getBoundingClientRect().width / currentReps;
+                var needed = Math.max(1, Math.ceil(window.innerWidth / setWidth));
+                if (needed > currentReps) {
+                    currentReps = build(); // build() re-collects the original nodes itself
+                }
+            }, 200);
+        });
     });
-  }, { threshold: 0.15 });
-
-  items.forEach(el => observer.observe(el));
-}
-
-document.addEventListener('DOMContentLoaded', initScrollReveal);
+})();

@@ -3,76 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ecebe6">
     <title>Race predictor — Artuur Heidbüchel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="predictions.css">
 </head>
 <body>
 
-    <div class="bg-shape bg-shape-1"></div>
-    <div class="bg-shape bg-shape-2"></div>
-    <div class="bg-shape bg-shape-3"></div>
-    <div class="bg-shape bg-shape-4"></div>
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <a class="brand" href="index.html">Artuur Heidbüchel</a>
+        <nav class="topnav mono" aria-label="Navigation">
+            <a class="ul" href="index.html">&larr; Home</a>
+            <a class="ul" href="https://github.com/ArtuurHeidbuchel/F1-Prediction-Model" target="_blank" rel="noopener noreferrer">Source on Github</a>
+        </nav>
+        <span class="mono muted">F1 // prediction model</span>
+    </header>
 
-    <main class="container">
+    <main>
 
-        <!-- LEFT SIDE -->
-        <div class="sidebar">
-            <header>
-                <a href="index.html" class="btn-small back-link">&larr; home</a>
-                <p class="section-label">f1 // prediction model</p>
-                <h1>Next race</h1>
-                <p class="sub-header" id="raceMeta">Loading schedule&hellip;</p>
-                <div class="countdown" id="countdown"></div>
-            </header>
-
-            <section>
-                <p class="section-label">what the model looks at</p>
-                <div class="weights" id="weightsDisplay"></div>
-                <p class="bio" style="margin-top:1.2rem;">
-                    An XGBoost model trained on past race results and qualifying times. Every race is
-                    predicted using only the races before it, and compared against two naive guesses:
-                    the starting grid and the championship order. It doesn't know about weather or
-                    reliability, and grid penalties given after qualifying aren't applied.
-                </p>
-                <a class="btn-small" href="https://github.com/ArtuurHeidbuchel/F1-Prediction-Model">source on github</a>
-            </section>
-        </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="main-content">
-            <section class="first-section-desktop">
-                <p class="section-label">predicted result &mdash; <span id="raceName">&hellip;</span></p>
-                <div id="boardWrap">
-                    <p class="status-line" id="status">Loading prediction&hellip;</p>
+        <!-- HEADER -->
+        <section class="f1-head">
+            <div class="wrap f1-head-in">
+                <div class="f1-head-text">
+                    <p class="role mono rise"><span class="role-dot"></span>F1 prediction model</p>
+                    <h1 class="f1-title rise" style="animation-delay:.1s">Next race</h1>
+                    <p class="f1-meta rise" style="animation-delay:.2s" id="raceMeta">Loading schedule&hellip;</p>
                 </div>
-            </section>
+                <div class="countdown rise" style="animation-delay:.3s" id="countdown" aria-live="polite"></div>
+            </div>
+        </section>
 
-            <section>
-                <p class="section-label">model accuracy <span id="accuracyMeta"></span></p>
-                <div id="accuracyWrap">
-                    <p class="status-line">Loading backtest results&hellip;</p>
+        <!-- PREDICTION -->
+        <section class="sec" id="prediction">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(01)</span>
+                        <h2>Predicted result</h2>
+                        <p class="mono muted f1-sub"><span id="raceName">&hellip;</span></p>
+                    </div>
+                    <div class="sec-body">
+                        <div id="boardWrap">
+                            <p class="status-line" id="status">Loading prediction&hellip;</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+
+        <!-- ACCURACY -->
+        <section class="sec" id="accuracy">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(02)</span>
+                        <h2>Model accuracy</h2>
+                        <p class="mono muted f1-sub"><span id="accuracyMeta"></span></p>
+                    </div>
+                    <div class="sec-body">
+                        <div id="accuracyWrap">
+                            <p class="status-line">Loading backtest results&hellip;</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHOD -->
+        <section class="sec sec-tight" id="method">
+            <div class="wrap">
+                <div class="sec-row">
+                    <div class="sec-label">
+                        <span class="idx mono muted">(03)</span>
+                        <h2>What it looks at</h2>
+                    </div>
+                    <div class="sec-body method">
+                        <div class="weights" id="weightsDisplay"></div>
+                        <p class="lead">An XGBoost model trained on past race results and qualifying times.</p>
+                        <p class="muted method-text">
+                            Every race is predicted using only the races before it, and compared against two naive
+                            guesses: the starting grid and the championship order. It doesn't know about weather or
+                            reliability, and grid penalties given after qualifying aren't applied.
+                        </p>
+                        <div class="buttons">
+                            <a class="btn btn-solid" href="https://github.com/ArtuurHeidbuchel/F1-Prediction-Model" target="_blank" rel="noopener noreferrer">Source on Github ↗</a>
+                            <a class="btn btn-ghost" href="index.html">&larr; Back home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
+
+    <!-- faint cropped signature -->
+    <div class="signature" aria-hidden="true"><span>Artuur Heidbüchel</span></div>
+
+    <!-- film grain -->
+    <svg class="grain" aria-hidden="true" width="100%" height="100%">
+        <filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+        <rect width="100%" height="100%" filter="url(#nz)"/>
+    </svg>
 
     <script>
     (function(){
       "use strict";
-
-      // Keep this page's theme in sync with the rest of the site.
-      try{
-        if(localStorage.getItem("theme") === "dark"){
-          document.body.classList.add("dark-theme");
-        }
-      }catch(e){}
-
-      // The model repo's Action commits fresh CSVs here (GitHub's CDN caches them ~5 min).
       const BASE = "https://raw.githubusercontent.com/ArtuurHeidbuchel/F1-Prediction-Model/main/output/";
       const $ = id => document.getElementById(id);
       const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -88,7 +127,7 @@
         drv_vs_team5: "Driver vs teammate", team_qgap5: "Team quali pace", team_pts5: "Team points (last 5)"
       };
 
-      // ---- CSV loading (small quote-aware parser, no dependencies) ----
+      // ---- CSV loading  ----
       function parseCSV(text){
         const rows = []; let row = [], f = "", q = false;
         for(let i = 0; i < text.length; i++){
@@ -131,13 +170,13 @@
         $("raceName").textContent = next.race_name;
         const dateStr = new Date(next.race_date + "T12:00:00Z")
           .toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
-        $("raceMeta").textContent = `${next.circuit_name}, ${next.locality}, ${next.country} · ${dateStr}`;
+        $("raceMeta").textContent = `${next.race_name} · ${next.circuit_name}, ${next.locality}, ${next.country} · ${dateStr}`;
 
         const target = new Date(next.race_date + "T" + (next.race_time_utc || "12:00:00Z"));
         const el = $("countdown");
         (function tick(){
           const diff = target - new Date();
-          if(diff <= 0){ el.innerHTML = `<div class="unit"><span class="num">Race weekend is here</span></div>`; return; }
+          if(diff <= 0){ el.innerHTML = `<div class="unit unit-wide"><span class="num">Race weekend is here</span></div>`; return; }
           const d = Math.floor(diff / 86400000), h = Math.floor(diff % 86400000 / 3600000), m = Math.floor(diff % 3600000 / 60000);
           el.innerHTML = `
             <div class="unit"><span class="num">${d}</span><span class="label">days</span></div>
@@ -155,10 +194,10 @@
         const min = Math.min(...scores), range = Math.max(Math.max(...scores) - min, 0.0001);
 
         const board = rows.map((r, i) => `
-          <div class="project-item driver-row">
+          <div class="driver-row" style="animation-delay:${Math.min(i, 12) * 0.04}s">
             <span class="pos">P${i + 1}</span>
             <div class="info">
-              <div class="name">${esc(r.driver_name)}</div>
+              <div class="dname">${esc(r.driver_name)}</div>
               <div class="team">${esc(pretty(r.constructor_id))}</div>
             </div>
             <span class="points">grid P${esc(r.grid)}</span>
@@ -168,13 +207,13 @@
         const pick = m => byModel(m)[0]?.driver_name;
         const note = `<p class="baseline-note">Winner pick: ${esc(pick("xgboost"))} (model) &middot;
           ${esc(pick("grid"))} (if grid order held) &middot; ${esc(pick("standings"))} (if championship order held)</p>`;
-        $("boardWrap").innerHTML = board + note;
+        $("boardWrap").innerHTML = `<div class="board">${board}</div>` + note;
       }
 
       // ---- Accuracy ----
       function renderImportance(imp){
         $("weightsDisplay").innerHTML = imp.filter(r => r.model === "xgboost").slice(0, 6)
-          .map(r => `<span class="tech-tag">${esc(FEATURE_LABELS[r.feature] || pretty(r.feature))} — ${Math.round(r.importance * 100)}%</span>`)
+          .map(r => `<span class="tech-tag">${esc(FEATURE_LABELS[r.feature] || pretty(r.feature))} <b>${Math.round(r.importance * 100)}%</b></span>`)
           .join("");
       }
 
@@ -182,7 +221,7 @@
         const all = summary.filter(r => r.scope === "all");
         const x = all.find(r => r.model === "xgboost");
         if(!x){ $("accuracyWrap").innerHTML = `<p class="status-line">No completed races to score yet.</p>`; return; }
-        $("accuracyMeta").textContent = "— " + timeAgo(x.generated_at);
+        $("accuracyMeta").textContent = timeAgo(x.generated_at);
 
         const seasons = [...new Set(races.map(r => +r.season))];
         const range = seasons.length > 1 ? `${Math.min(...seasons)}–${Math.max(...seasons)}` : `${seasons[0] ?? ""}`;
@@ -203,11 +242,13 @@
             <div class="stat-card"><span class="num">${fmt(x.mae_positions)}</span><span class="label">avg. position error</span></div>
             <div class="stat-card"><span class="num">${fmt(x.races)}</span><span class="label">races scored</span></div>
           </div>
-          <p class="baseline-note">Backtest ${range}: each race predicted using only earlier races.</p>
-          ${line("guessing the starting grid order", all.find(r => r.model === "grid"))}
-          ${line("guessing the pre-race championship order", all.find(r => r.model === "standings"))}
-          ${verdict("grid", "the starting grid")}
-          ${verdict("standings", "the championship order")}`;
+          <div class="notes">
+            <p class="baseline-note">Backtest ${range}: each race predicted using only earlier races.</p>
+            ${line("guessing the starting grid order", all.find(r => r.model === "grid"))}
+            ${line("guessing the pre-race championship order", all.find(r => r.model === "standings"))}
+            ${verdict("grid", "the starting grid")}
+            ${verdict("standings", "the championship order")}
+          </div>`;
 
         const cur = Math.max(...seasons);
         const rows = races.filter(r => r.model === "xgboost" && +r.season === cur)
@@ -218,7 +259,7 @@
               <span class="rname">${esc(r.race_name)}</span>
               <span class="matchup">picked ${esc(r.predicted_winner.split(" ").pop())} &middot; won by ${esc(r.actual_winner.split(" ").pop())}</span>
             </div>`).join("");
-        const history = rows ? `<p class="baseline-note">${cur} season, race by race:</p><div class="race-history">${rows}</div>` : "";
+        const history = rows ? `<p class="mono muted hist-label">${cur} season, race by race</p><div class="race-history">${rows}</div>` : "";
         $("accuracyWrap").innerHTML = stats + history;
       }
 
