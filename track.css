@@ -1,0 +1,15 @@
+/* ==========================================================
+   Track display — small dot-matrix circuit graphic next to the "Next race" title.
+   Load after style.css / predictions.css.
+   ========================================================== */
+.f1-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 14px clamp(20px, 3vw, 44px); }
+
+.track-mini {
+    flex: none; position: relative; cursor: pointer;
+    height: clamp(110px, 11.5vw, 200px);
+    aspect-ratio: 1.9 / 1;
+    background: var(--track-bg, transparent);
+    animation: rise .8s cubic-bezier(.2,.7,.2,1) both;
+}
+.track-mini[hidden] { display: none; }
+.track-mini canvas { position: absolute; inset: 0; display: block; }

@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="predictions.css">
+    <link rel="stylesheet" href="track.css">
 </head>
 <body>
 
@@ -30,7 +31,12 @@
             <div class="wrap f1-head-in">
                 <div class="f1-head-text">
                     <p class="role mono rise"><span class="role-dot"></span>F1 prediction model</p>
-                    <h1 class="f1-title rise" style="animation-delay:.1s">Next race</h1>
+                    <div class="f1-title-row rise" style="animation-delay:.1s">
+                        <h1 class="f1-title">Next race</h1>
+                        <div class="track-mini" id="trackStage" hidden>
+                            <canvas id="trackCanvas" role="img" aria-label="Animated dot-matrix preview of the next circuit"></canvas>
+                        </div>
+                    </div>
                     <p class="f1-meta rise" style="animation-delay:.2s" id="raceMeta">Loading schedule&hellip;</p>
                 </div>
                 <div class="countdown rise" style="animation-delay:.3s" id="countdown" aria-live="polite"></div>
@@ -109,6 +115,8 @@
         <rect width="100%" height="100%" filter="url(#nz)"/>
     </svg>
 
+    <script src="circuits.js"></script>
+    <script src="track-display.js"></script>
     <script>
     (function(){
       "use strict";
@@ -268,6 +276,7 @@
           const next = (await load("next_race.csv"))[0];
           if(!next) throw new Error("next_race.csv is empty");
           renderHero(next);
+          if(window.TrackDisplay) TrackDisplay.show(next);
           if(next.status === "predicted") renderBoard(await load("predictions.csv"));
           else $("status").textContent = next.status === "awaiting_qualifying"
             ? "Waiting for qualifying — the prediction appears once the grid is set."
